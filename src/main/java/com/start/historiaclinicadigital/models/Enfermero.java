@@ -3,12 +3,12 @@ package com.start.historiaclinicadigital.models;
 import javax.persistence.Entity;
 
 @Entity
-public class Admin extends Persona{
+public class Enfermero extends Persona {
 
-    public Admin() {
+    public Enfermero() {
     }
 
-    public Admin(String nombre, String apellido, String email, int documento, String password) {
+    public Enfermero(String nombre, String apellido, String email, int documento, String password) {
         super(nombre, apellido, email, documento, password);
     }
 }
