@@ -85,7 +85,7 @@ public class ContactoEmergencia extends Persona {
         dto.put("telefono",this.getTelefono());
         dto.put("telefono2",this.getTelefono2());
         dto.put("relacion",this.getRelacion());
-        dto.put("direccio",this.getDireccion());
+        dto.put("direccion",this.getDireccion());
 
         return dto;
 
