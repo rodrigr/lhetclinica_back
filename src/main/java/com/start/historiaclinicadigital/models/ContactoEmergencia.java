@@ -71,4 +71,12 @@ public class ContactoEmergencia extends Persona {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
 }

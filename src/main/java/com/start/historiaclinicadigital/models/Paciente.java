@@ -18,6 +18,10 @@ public class Paciente extends Persona {
     private Set<ContactoEmergencia> contactoEmergencia = new HashSet<>();
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<HistoriaClinica> historiaClinica = new HashSet<>();
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<RegistroEnfermeria> registros = new HashSet<>();
+    @OneToOne(mappedBy = "paciente")
+    private Anamnesis anamnesis;
 
     public Paciente(){};
 
@@ -59,5 +63,40 @@ public class Paciente extends Persona {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public Set<ContactoEmergencia> getContactoEmergencia() {
+        return contactoEmergencia;
+    }
+
+    public Set<HistoriaClinica> getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public Set<RegistroEnfermeria> getRegistros() {
+        return registros;
+    }
+
+    public void addContactoEmergencia(ContactoEmergencia contactoEmergencia){
+        contactoEmergencia.setPaciente(this);
+        this.contactoEmergencia.add(contactoEmergencia);
+    }
+
+    public void addHistoriaClinica(HistoriaClinica historiaClinica){
+        historiaClinica.setPaciente(this);
+        this.historiaClinica.add(historiaClinica);
+    }
+
+    public void addRegistro(RegistroEnfermeria registro){
+        registro.setPaciente(this);
+        this.registros.add(registro);
+    }
+
+    public Anamnesis getAnamnesis() {
+        return anamnesis;
+    }
+
+    public void setAnamnesis(Anamnesis anamnesis) {
+        this.anamnesis = anamnesis;
     }
 }

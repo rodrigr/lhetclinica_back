@@ -26,6 +26,9 @@ public class HistoriaClinica {
     @JoinColumn(name="Paciente_id")
     private Paciente paciente;
 
+    @OneToMany(mappedBy = "historiaClinica", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Medicamento> medicamentos = new HashSet<>();
+
 
     public HistoriaClinica() {
     }
@@ -85,5 +88,30 @@ public class HistoriaClinica {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public Set<Medicamento> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void addMedicamento (Medicamento medicamento){
+        medicamento.setHistoriaClinica(this);
+        this.medicamentos.add(medicamento);
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

@@ -13,6 +13,10 @@ public class Medicamento {
     @JoinColumn(name = "registro_id")
     private RegistroEnfermeria registro;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "historia_clinica_id")
+    private HistoriaClinica historiaClinica;
+
     private String nombre;
     private String dosis;
 
@@ -49,5 +53,13 @@ public class Medicamento {
 
     public void setRegistro(RegistroEnfermeria registro) {
         this.registro = registro;
+    }
+
+    public HistoriaClinica getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
     }
 }

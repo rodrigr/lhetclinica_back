@@ -15,6 +15,10 @@ public class RegistroEnfermeria {
     @JoinColumn(name="enfermero_id")
     private Enfermero enfermero;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="paciente_id")
+    private Paciente paciente;
+
     @OneToMany(mappedBy = "registro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Medicamento> medicamentos = new HashSet<>();
 
@@ -46,6 +50,14 @@ public class RegistroEnfermeria {
 
     public void setEnfermero(Enfermero enfermero) {
         this.enfermero = enfermero;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 
     public Set<Medicamento> getMedicamentos() {
