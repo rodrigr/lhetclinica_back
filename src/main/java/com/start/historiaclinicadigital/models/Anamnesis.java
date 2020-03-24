@@ -158,16 +158,16 @@ public class Anamnesis {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.getId());
         dto.put("viaje",this.isViaje());
-        dto.put("",this.getFecha_viaje());
-        dto.put("",this.getDestino_viaje());
-        dto.put("",this.isEmbarazo());
-        dto.put("",this.getSemanas_gestacion());
-        dto.put("",this.getEmbarazos_previos());
-        dto.put("",this.getAntecedentes_personales());
-        dto.put("",this.getAntecedentes_familiares());
-        dto.put("",this.getMedicacion_regular());
-        dto.put("",this.getConvivientes());
-        dto.put("",this.getObservaciones());
+        dto.put("fechaViaje",this.getFecha_viaje());
+        dto.put("destinoViaje",this.getDestino_viaje());
+        dto.put("embarazo",this.isEmbarazo());
+        dto.put("semanasGestacion",this.getSemanas_gestacion());
+        dto.put("embarazosPrevios",this.getEmbarazos_previos());
+        dto.put("antecedentesPersonales",this.getAntecedentes_personales());
+        dto.put("antecedentesFamiliares",this.getAntecedentes_familiares());
+        dto.put("medicacionRegular",this.getMedicacion_regular());
+        dto.put("convivientes",this.getConvivientes());
+        dto.put("observaciones",this.getObservaciones());
 
         return dto;
 

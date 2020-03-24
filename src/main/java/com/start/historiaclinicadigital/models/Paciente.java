@@ -100,6 +100,35 @@ public class Paciente extends Persona {
     }
 
     //DTO
+    public long ultimaHistoriaClinica(Set<HistoriaClinica> historiaClinicaSet){
+        long maxId = historiaClinicaSet
+                .stream()
+                .max(Comparator.comparing(HistoriaClinica::getId))
+                .get()
+                .getId();
+        return maxId;
+    }
+
+    public Map<String,Object> HistoriaClinicaDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("historiasClinicas", this.getHistoriaClinica()
+                        .stream()
+                        .map(historiaClinica -> historiaClinica.makeHistoriaClinicaDTO())
+                        .collect(Collectors.toList())
+                );
+        return dto;
+    }
+
+    public Map<String,Object> RegistroEnfermeriaDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("registrosEnfermeria", this.getRegistros()
+                .stream()
+                .map(registroEnfermeria -> registroEnfermeria.makeRegistroEnfermeriaDTO())
+                .collect(Collectors.toList())
+        );
+        return dto;
+    }
+
     public Map<String,Object> PacienteDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.getId());
@@ -116,6 +145,10 @@ public class Paciente extends Persona {
                 .map(contactoEmergencia -> contactoEmergencia.ContactoEmergenciaDTO())
                 .collect(Collectors.toList())
 
+        );
+        dto.put("estado",this.getHistoriaClinica()
+                .stream()
+                .filter(historiaClinica -> historiaClinica.getId() == ultimaHistoriaClinica(this.getHistoriaClinica()))
         );
     return dto;
     }

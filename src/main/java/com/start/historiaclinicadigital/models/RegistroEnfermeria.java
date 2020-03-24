@@ -3,6 +3,8 @@ package com.start.historiaclinicadigital.models;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -117,4 +119,17 @@ public class RegistroEnfermeria {
         this.observaciones = observaciones;
     }
 
+
+    //DTOs
+    public Map<String,Object> makeRegistroEnfermeriaDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("fechaHora",this.getFecha_hora());
+        dto.put("tensionArterial",this.getTension_arterial());
+        dto.put("frecuenciaCardiaca",this.getFrecuencia_cardiaca());
+        dto.put("frecuenciaRespiratoria",this.getFrecuencia_respiratoria());
+        dto.put("temperatura",this.getTemperatura());
+        dto.put("observaciones",this.getObservaciones());
+        return dto;
+    }
 }

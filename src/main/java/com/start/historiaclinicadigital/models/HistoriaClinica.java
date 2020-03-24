@@ -3,6 +3,8 @@ package com.start.historiaclinicadigital.models;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import javax.persistence.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 @Entity
 public class HistoriaClinica {
@@ -114,4 +116,23 @@ public class HistoriaClinica {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
+    public long getId() {
+        return id;
+    }
+    //DTOs
+    public Map<String,Object> makeHistoriaClinicaDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("fechaHora",this.getFecha_hora());
+        dto.put("diagnostico",this.getDiagnostico());
+        dto.put("temperatura",this.getTemperatura());
+        dto.put("sintomas",this.getSintomas());
+        dto.put("tratamiento",this.getTratamiento());
+        dto.put("observaciones",this.getObservaciones());
+
+        return dto;
+    }
+
+
 }
