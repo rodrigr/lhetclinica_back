@@ -27,6 +27,21 @@ public abstract class Persona {
         this.password = password;
     }
 
+    public Persona(String nombre, String apellido, String email, int documento) {
+
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.documento = documento;
+    }
+
+    public Persona(String nombre, String apellido, String email) {
+
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+    }
+
     public long getId() {
         return id;
     }

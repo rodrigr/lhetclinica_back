@@ -1,9 +1,8 @@
 package com.start.historiaclinicadigital.models;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Paciente extends Persona {
@@ -14,19 +13,19 @@ public class Paciente extends Persona {
     private String sexo;
     private String telefono;
 
+    @OneToOne(mappedBy = "paciente")
+    private Anamnesis anamnesis;
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ContactoEmergencia> contactoEmergencia = new HashSet<>();
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<HistoriaClinica> historiaClinica = new HashSet<>();
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<RegistroEnfermeria> registros = new HashSet<>();
-    @OneToOne(mappedBy = "paciente")
-    private Anamnesis anamnesis;
 
     public Paciente(){};
 
-    public Paciente(String nombre, String apellido, String email, int documento, String password, Date fecha_nacimiento, String direccion, String sexo, String telefono) {
-        super(nombre, apellido, email, documento, password);
+    public Paciente(String nombre, String apellido, String email, int documento, Date fecha_nacimiento, String direccion, String sexo, String telefono) {
+        super(nombre, apellido, email, documento);
         this.fecha_nacimiento = fecha_nacimiento;
         this.direccion = direccion;
         this.sexo = sexo;
@@ -99,4 +98,30 @@ public class Paciente extends Persona {
     public void setAnamnesis(Anamnesis anamnesis) {
         this.anamnesis = anamnesis;
     }
+
+    //DTO
+    public Map<String,Object> PacienteDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("nombre",this.getNombre());
+        dto.put("apellido",this.getApellido());
+        dto.put("documento",this.getDocumento());
+        dto.put("email",this.getEmail());
+        dto.put("sexo",this.getSexo());
+        dto.put("direccion",this.getDireccion());
+        dto.put("telefono",this.getTelefono());
+        dto.put("anamnesis",this.getAnamnesis().AnamnesisDTO());
+        dto.put("contactosEmergencia",this.getContactoEmergencia()
+                .stream()
+                .map(contactoEmergencia -> contactoEmergencia.ContactoEmergenciaDTO())
+                .collect(Collectors.toList())
+
+        );
+    return dto;
+    }
+
+
+
+
+
 }

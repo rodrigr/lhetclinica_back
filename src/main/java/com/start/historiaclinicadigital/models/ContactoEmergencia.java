@@ -2,6 +2,8 @@ package com.start.historiaclinicadigital.models;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -9,7 +11,6 @@ public class ContactoEmergencia extends Persona {
 
     private String telefono;
     private String telefono2;
-    private String mail;
     private String relacion;
     private String direccion;
 
@@ -23,11 +24,10 @@ public class ContactoEmergencia extends Persona {
 
     public ContactoEmergencia(){};
 
-    public ContactoEmergencia(String nombre, String apellido, String email, int documento, String password, String telefono, String telefono2, String mail, String relacion, String direccion) {
-        super(nombre, apellido, email, documento, password);
+    public ContactoEmergencia(String nombre, String apellido, String email, String telefono, String telefono2, String mail, String relacion, String direccion) {
+        super(nombre, apellido, email);
         this.telefono = telefono;
         this.telefono2 = telefono2;
-        this.mail = mail;
         this.relacion = relacion;
         this.direccion = direccion;
     }
@@ -48,13 +48,7 @@ public class ContactoEmergencia extends Persona {
         this.telefono2 = telefono2;
     }
 
-    public String getMail() {
-        return mail;
-    }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
 
     public String getRelacion() {
         return relacion;
@@ -79,4 +73,22 @@ public class ContactoEmergencia extends Persona {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
+    //DTO
+
+    public Map<String,Object> ContactoEmergenciaDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("nombre",this.getNombre());
+        dto.put("apellido",this.getApellido());
+        dto.put("email",this.getEmail());
+        dto.put("telefono",this.getTelefono());
+        dto.put("telefono2",this.getTelefono2());
+        dto.put("relacion",this.getRelacion());
+        dto.put("direccio",this.getDireccion());
+
+        return dto;
+
+    }
+
 }

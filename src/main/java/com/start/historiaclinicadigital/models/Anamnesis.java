@@ -1,6 +1,8 @@
 package com.start.historiaclinicadigital.models;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Entity
 public class Anamnesis {
@@ -146,4 +148,30 @@ public class Anamnesis {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    //DTO
+    public Map<String,Object> AnamnesisDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("viaje",this.isViaje());
+        dto.put("",this.getFecha_viaje());
+        dto.put("",this.getDestino_viaje());
+        dto.put("",this.isEmbarazo());
+        dto.put("",this.getSemanas_gestacion());
+        dto.put("",this.getEmbarazos_previos());
+        dto.put("",this.getAntecedentes_personales());
+        dto.put("",this.getAntecedentes_familiares());
+        dto.put("",this.getMedicacion_regular());
+        dto.put("",this.getConvivientes());
+        dto.put("",this.getObservaciones());
+
+        return dto;
+
+    }
+
+
 }
