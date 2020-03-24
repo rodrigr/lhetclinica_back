@@ -1,10 +1,9 @@
 package com.start.historiaclinicadigital.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class RegistroEnfermeria {
@@ -12,12 +11,19 @@ public class RegistroEnfermeria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    LocalDateTime fecha_hora;
-    float tension_arterial;
-    float frecuencia_cardiaca;
-    float frecuencia_respiratoria;
-    float temperatura;
-    String observaciones;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="enfermero_id")
+    private Enfermero enfermero;
+
+    @OneToMany(mappedBy = "registro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Medicamento> medicamentos = new HashSet<>();
+
+    private LocalDateTime fecha_hora;
+    private float tension_arterial;
+    private float frecuencia_cardiaca;
+    private float frecuencia_respiratoria;
+    private float temperatura;
+    private String observaciones;
 
     public RegistroEnfermeria(){}
 
@@ -32,6 +38,23 @@ public class RegistroEnfermeria {
 
     public long getId() {
         return id;
+    }
+
+    public Enfermero getEnfermero() {
+        return enfermero;
+    }
+
+    public void setEnfermero(Enfermero enfermero) {
+        this.enfermero = enfermero;
+    }
+
+    public Set<Medicamento> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void addMedicamento (Medicamento medicamento){
+        medicamento.setRegistro(this);
+        this.medicamentos.add(medicamento);
     }
 
     public LocalDateTime getFecha_hora() {
@@ -81,4 +104,5 @@ public class RegistroEnfermeria {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
 }

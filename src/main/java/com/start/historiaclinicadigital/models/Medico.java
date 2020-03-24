@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class Medico extends Persona {
-    int matricula;
+    private int matricula;
 
     public Medico(){}
 

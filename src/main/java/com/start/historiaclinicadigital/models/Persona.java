@@ -11,11 +11,11 @@ public abstract class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String nombre;
-    String apellido;
-    String email;
-    int documento;
-    String password;
+    private String nombre;
+    private String apellido;
+    private String email;
+    private int documento;
+    private String password;
 
     public Persona (){}
 
