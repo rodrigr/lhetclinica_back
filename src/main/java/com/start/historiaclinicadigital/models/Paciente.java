@@ -1,6 +1,7 @@
 package com.start.historiaclinicadigital.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 public class Paciente extends Persona {
 
 
-    private Date fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
     private String direccion;
     private String sexo;
     private String telefono;
@@ -24,7 +25,7 @@ public class Paciente extends Persona {
 
     public Paciente(){};
 
-    public Paciente(String nombre, String apellido, String email, int documento, Date fecha_nacimiento, String direccion, String sexo, String telefono) {
+    public Paciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, String sexo, String telefono) {
         super(nombre, apellido, email, documento);
         this.fecha_nacimiento = fecha_nacimiento;
         this.direccion = direccion;
@@ -32,11 +33,11 @@ public class Paciente extends Persona {
         this.telefono = telefono;
     }
 
-    public Date getFecha_nacimiento() {
+    public LocalDate getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
+    public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
