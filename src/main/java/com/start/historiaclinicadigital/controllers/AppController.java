@@ -1,8 +1,6 @@
 package com.start.historiaclinicadigital.controllers;
 
-import com.start.historiaclinicadigital.models.Enfermero;
-import com.start.historiaclinicadigital.models.Medico;
-import com.start.historiaclinicadigital.models.Paciente;
+import com.start.historiaclinicadigital.models.*;
 import com.start.historiaclinicadigital.repositories.EnfermeroRepository;
 import com.start.historiaclinicadigital.repositories.MedicoRepository;
 import com.start.historiaclinicadigital.repositories.PacienteRepository;
@@ -79,7 +77,7 @@ public class AppController {
                     responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
                 } else{
                     dto.put("paciente",paciente.get().PacienteDTO());
-                    dto.put("historiasClinicas",paciente.get().getHistoriaClinica()); //falta DTO
+                    dto.put("historiasClinicas",paciente.get().getHistoriaClinica().stream().map(HistoriaClinica::makeHistoriaClinicaDTO));
                     responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
                 }
             }else{
@@ -120,7 +118,7 @@ public class AppController {
                     responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
                 } else{
                     dto.put("paciente",paciente.get().PacienteDTO());
-                    dto.put("registros",paciente.get().getRegistros()); //falta DTO
+                    dto.put("registros",paciente.get().getRegistros().stream().map(RegistroEnfermeria::makeRegistroEnfermeriaDTO));
                     responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
                 }
             }

@@ -149,7 +149,7 @@ public class Paciente extends Persona {
 //        );
         dto.put("estado",this.getHistoriaClinica()
                 .stream()
-                .filter(historiaClinica -> historiaClinica.getId() == ultimaHistoriaClinica(this.getHistoriaClinica()))
+                .filter(historiaClinica -> historiaClinica.getId() == ultimaHistoriaClinica(this.getHistoriaClinica())).findFirst().get().makeHistoriaClinicaDTO()
         );
     return dto;
     }
