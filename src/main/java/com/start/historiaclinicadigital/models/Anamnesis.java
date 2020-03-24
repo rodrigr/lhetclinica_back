@@ -1,6 +1,6 @@
 package com.start.historiaclinicadigital.models;
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class Anamnesis {
     private Paciente paciente;
 
     private boolean viaje;
-    private Date fecha_viaje;
+    private LocalDate fecha_viaje;
     private String destino_viaje;
     private boolean embarazo;
     private int semanas_gestacion;
@@ -30,7 +30,7 @@ public class Anamnesis {
     public Anamnesis() {
     }
 
-    public Anamnesis(boolean viaje, Date fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones) {
+    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones,Paciente paciente) {
         this.viaje = viaje;
         this.fecha_viaje = fecha_viaje;
         this.destino_viaje = destino_viaje;
@@ -43,6 +43,7 @@ public class Anamnesis {
         this.trabajo = trabajo;
         this.convivientes = convivientes;
         this.observaciones = observaciones;
+        this.paciente = paciente;
     }
 
     public boolean isViaje() {
@@ -53,11 +54,11 @@ public class Anamnesis {
         this.viaje = viaje;
     }
 
-    public Date getFecha_viaje() {
+    public LocalDate getFecha_viaje() {
         return fecha_viaje;
     }
 
-    public void setFecha_viaje(Date fecha_viaje) {
+    public void setFecha_viaje(LocalDate fecha_viaje) {
         this.fecha_viaje = fecha_viaje;
     }
 

@@ -18,7 +18,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers("/rest/**").hasAuthority("ADMIN")
-                .antMatchers("/web/**", "/api/**").hasAnyAuthority("ADMIN","MEDICO","ENFERMERO","DATA_ANALYST");
+                .antMatchers( "/api/**").hasAnyAuthority("ADMIN","MEDICO","ENFERMERO","DATA_ANALYST");
 
         http.formLogin()
                 .usernameParameter("email")

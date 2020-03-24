@@ -112,12 +112,12 @@ public class Paciente extends Persona {
         dto.put("direccion",this.getDireccion());
         dto.put("telefono",this.getTelefono());
         dto.put("anamnesis",this.getAnamnesis().AnamnesisDTO());
-        dto.put("contactosEmergencia",this.getContactoEmergencia()
-                .stream()
-                .map(contactoEmergencia -> contactoEmergencia.ContactoEmergenciaDTO())
-                .collect(Collectors.toList())
-
-        );
+//        dto.put("contactosEmergencia",this.getContactoEmergencia()
+//                .stream()
+//                .map(contactoEmergencia -> contactoEmergencia.ContactoEmergenciaDTO())
+//                .collect(Collectors.toList())
+//
+//        );
     return dto;
     }
 

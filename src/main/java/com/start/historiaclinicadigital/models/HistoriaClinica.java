@@ -33,13 +33,15 @@ public class HistoriaClinica {
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, float temperatura, String sintomas, String tratamiento, String observaciones) {
+    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, float temperatura, String sintomas, String tratamiento, String observaciones,Medico medico, Paciente paciente) {
         this.fecha_hora = fecha_hora;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
         this.sintomas = sintomas;
         this.tratamiento = tratamiento;
         this.observaciones = observaciones;
+        this.medico = medico;
+        this.paciente = paciente;
     }
 
     public LocalDateTime getFecha_hora() {
