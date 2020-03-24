@@ -1,9 +1,15 @@
 package com.start.historiaclinicadigital.models;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
 public class Anamnesis {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
     private boolean viaje;
     private Date fecha_viaje;
     private String destino_viaje;

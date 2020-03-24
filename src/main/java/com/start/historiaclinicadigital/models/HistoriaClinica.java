@@ -1,21 +1,36 @@
 package com.start.historiaclinicadigital.models;
 
-import java.util.Date;
-import javax.persistence.Entity;
-
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import javax.persistence.*;
+import java.util.Set;
 @Entity
 public class HistoriaClinica {
-    private Date fecha_hora;
+    private LocalDateTime fecha_hora;
     private String diagnostico;
     private float temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="medico_id")
+    private Medico medico;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="Paciente_id")
+    private Paciente paciente;
+
+
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(Date fecha_hora, String diagnostico, float temperatura, String sintomas, String tratamiento, String observaciones) {
+    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, float temperatura, String sintomas, String tratamiento, String observaciones) {
         this.fecha_hora = fecha_hora;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
@@ -24,11 +39,11 @@ public class HistoriaClinica {
         this.observaciones = observaciones;
     }
 
-    public Date getFecha_hora() {
+    public LocalDateTime getFecha_hora() {
         return fecha_hora;
     }
 
-    public void setFecha_hora(Date fecha_hora) {
+    public void setFecha_hora(LocalDateTime fecha_hora) {
         this.fecha_hora = fecha_hora;
     }
 

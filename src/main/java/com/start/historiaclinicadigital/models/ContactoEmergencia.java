@@ -1,6 +1,8 @@
 package com.start.historiaclinicadigital.models;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ContactoEmergencia extends Persona {
@@ -10,6 +12,14 @@ public class ContactoEmergencia extends Persona {
     private String mail;
     private String relacion;
     private String direccion;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="Paciente_id")
+    private Paciente paciente;
+
+
 
     public ContactoEmergencia(){};
 

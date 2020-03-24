@@ -1,15 +1,23 @@
 package com.start.historiaclinicadigital.models;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Paciente extends Persona {
+
 
     private Date fecha_nacimiento;
     private String direccion;
     private String sexo;
     private String telefono;
+
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ContactoEmergencia> contactoEmergencia = new HashSet<>();
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<HistoriaClinica> historiaClinica = new HashSet<>();
 
     public Paciente(){};
 
