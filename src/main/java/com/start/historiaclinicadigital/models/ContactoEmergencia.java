@@ -24,12 +24,13 @@ public class ContactoEmergencia extends Persona {
 
     public ContactoEmergencia(){};
 
-    public ContactoEmergencia(String nombre, String apellido, String email, String telefono, String telefono2, String mail, String relacion, String direccion) {
+    public ContactoEmergencia(String nombre, String apellido, String email, String telefono, String telefono2, String relacion, String direccion,Paciente paciente) {
         super(nombre, apellido, email);
         this.telefono = telefono;
         this.telefono2 = telefono2;
         this.relacion = relacion;
         this.direccion = direccion;
+        this.paciente = paciente;
     }
 
     public String getTelefono() {

@@ -114,7 +114,7 @@ public class Paciente extends Persona {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("historiasClinicas", this.getHistoriaClinica()
                         .stream()
-                        .map(historiaClinica -> historiaClinica.makeHistoriaClinicaDTO())
+                        .map(HistoriaClinica::makeHistoriaClinicaDTO)
                         .collect(Collectors.toList())
                 );
         return dto;
@@ -124,7 +124,7 @@ public class Paciente extends Persona {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("registrosEnfermeria", this.getRegistros()
                 .stream()
-                .map(registroEnfermeria -> registroEnfermeria.makeRegistroEnfermeriaDTO())
+                .map(RegistroEnfermeria::makeRegistroEnfermeriaDTO)
                 .collect(Collectors.toList())
         );
         return dto;
@@ -140,17 +140,29 @@ public class Paciente extends Persona {
         dto.put("sexo",this.getSexo());
         dto.put("direccion",this.getDireccion());
         dto.put("telefono",this.getTelefono());
-        dto.put("anamnesis",this.getAnamnesis().AnamnesisDTO());
-//        dto.put("contactosEmergencia",this.getContactoEmergencia()
-//                .stream()
-//                .map(contactoEmergencia -> contactoEmergencia.ContactoEmergenciaDTO())
-//                .collect(Collectors.toList())
-//
-//        );
-        dto.put("estado",this.getHistoriaClinica()
-                .stream()
-                .filter(historiaClinica -> historiaClinica.getId() == ultimaHistoriaClinica(this.getHistoriaClinica())).findFirst().get().makeHistoriaClinicaDTO()
-        );
+        if(this.getAnamnesis() != null)
+            dto.put("anamnesis",this.getAnamnesis().AnamnesisDTO());
+        else
+            dto.put("anamnesis",null);
+        if(this.getContactoEmergencia().size() > 0){
+            dto.put("contactosEmergencia",this.getContactoEmergencia()
+                    .stream()
+                    .map(ContactoEmergencia::ContactoEmergenciaDTO)
+                    .collect(Collectors.toList())
+
+            );
+        }else{
+            dto.put("contactosEmergencia",null);
+        }
+        if(this.getHistoriaClinica().size() > 0){
+            dto.put("estado",this.getHistoriaClinica()
+                    .stream()
+                    .filter(historiaClinica -> historiaClinica.getId() == ultimaHistoriaClinica(this.getHistoriaClinica())).findFirst().get().makeHistoriaClinicaDTO()
+            );
+        }else{
+            dto.put("estado",null);
+        }
+
     return dto;
     }
 
