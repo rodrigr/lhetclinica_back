@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -219,7 +220,7 @@ public class AppController {
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
                 }else {
                     HistoriaClinica historiaClinica = new HistoriaClinica(
-                          formularioHC.getFecha_hora(),
+                          LocalDateTime.now(),
                           formularioHC.getDiagnostico(),
                           formularioHC.getTemperatura(),
                           formularioHC.getSintomas(),
@@ -257,7 +258,7 @@ public class AppController {
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
                 }else {
                     RegistroEnfermeria registroEnfermeria = new RegistroEnfermeria(
-                            formularioRegistro.getFecha_hora(),
+                            LocalDateTime.now(),
                             formularioRegistro.getTension_arterial(),
                             formularioRegistro.getFrecuencia_cardiaca(),
                             formularioRegistro.getFrecuencia_respiratoria(),

@@ -3,20 +3,13 @@ package com.start.historiaclinicadigital.dtos;
 import java.time.LocalDateTime;
 
 public class FormularioHC {
-    private LocalDateTime fecha_hora;
     private String diagnostico;
     private float temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
 
-    public LocalDateTime getFecha_hora() {
-        return fecha_hora;
-    }
 
-    public void setFecha_hora(LocalDateTime fecha_hora) {
-        this.fecha_hora = fecha_hora;
-    }
 
     public String getDiagnostico() {
         return diagnostico;
