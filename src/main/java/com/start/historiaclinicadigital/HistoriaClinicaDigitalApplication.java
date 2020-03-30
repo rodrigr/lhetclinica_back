@@ -61,7 +61,7 @@ public class HistoriaClinicaDigitalApplication {
 
 
 			//Anamnesis
-			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0,"","","","",2,"",paciente1);
+			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0,"","","","",2,"",true,"","",paciente1);
 
 			//Repo Meds
 			medicoRepository.save(medico1);

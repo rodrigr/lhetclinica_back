@@ -26,11 +26,14 @@ public class Anamnesis {
     private String trabajo;
     private int convivientes;
     private String observaciones;
+    private boolean obra_social;
+    private String nombre_obra_social;
+    private String grupo_sanguineo;
 
     public Anamnesis() {
     }
 
-    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones,Paciente paciente) {
+    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, String grupo_sanguineo,Paciente paciente) {
         this.viaje = viaje;
         this.fecha_viaje = fecha_viaje;
         this.destino_viaje = destino_viaje;
@@ -44,6 +47,9 @@ public class Anamnesis {
         this.convivientes = convivientes;
         this.observaciones = observaciones;
         this.paciente = paciente;
+        this.obra_social = obra_social;
+        this.nombre_obra_social = nombre_obra_social;
+        this.grupo_sanguineo = grupo_sanguineo;
     }
 
     public boolean isViaje() {
@@ -154,6 +160,30 @@ public class Anamnesis {
         return id;
     }
 
+    public boolean isObra_social() {
+        return obra_social;
+    }
+
+    public void setObra_social(boolean obra_social) {
+        this.obra_social = obra_social;
+    }
+
+    public String getGrupo_sanguineo() {
+        return grupo_sanguineo;
+    }
+
+    public void setGrupo_sanguineo(String grupo_sanguineo) {
+        this.grupo_sanguineo = grupo_sanguineo;
+    }
+
+    public String getNombre_obra_social() {
+        return nombre_obra_social;
+    }
+
+    public void setNombre_obra_social(String nombre_obra_social) {
+        this.nombre_obra_social = nombre_obra_social;
+    }
+
     //DTO
     public Map<String,Object> AnamnesisDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -168,6 +198,9 @@ public class Anamnesis {
         dto.put("antecedentesFamiliares",this.getAntecedentes_familiares());
         dto.put("medicacionRegular",this.getMedicacion_regular());
         dto.put("convivientes",this.getConvivientes());
+        dto.put("obraSocial", this.isObra_social());
+        dto.put("nombreObraSocial", this.getNombre_obra_social());
+        dto.put("grupoSanguineo",this.getGrupo_sanguineo());
         dto.put("observaciones",this.getObservaciones());
 
         return dto;

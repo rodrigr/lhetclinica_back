@@ -33,13 +33,15 @@ public class RegistroEnfermeria {
 
     public RegistroEnfermeria(){}
 
-    public RegistroEnfermeria(LocalDateTime fecha_hora, float tension_arterial, float frecuencia_cardiaca, float frecuencia_respiratoria, float temperatura, String observaciones) {
+    public RegistroEnfermeria(LocalDateTime fecha_hora, float tension_arterial, float frecuencia_cardiaca, float frecuencia_respiratoria, float temperatura, String observaciones,Enfermero enfermero,Paciente paciente) {
         this.fecha_hora = fecha_hora;
         this.tension_arterial = tension_arterial;
         this.frecuencia_cardiaca = frecuencia_cardiaca;
         this.frecuencia_respiratoria = frecuencia_respiratoria;
         this.temperatura = temperatura;
         this.observaciones = observaciones;
+        this.enfermero = enfermero;
+        this.paciente = paciente;
     }
 
     public long getId() {
