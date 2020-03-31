@@ -10,7 +10,7 @@ import java.util.Set;
 public class HistoriaClinica {
     private LocalDateTime fecha_hora;
     private String diagnostico;
-    private float temperatura;
+    private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
@@ -35,7 +35,7 @@ public class HistoriaClinica {
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, float temperatura, String sintomas, String tratamiento, String observaciones,Medico medico, Paciente paciente) {
+    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones,Medico medico, Paciente paciente) {
         this.fecha_hora = fecha_hora;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
@@ -62,11 +62,11 @@ public class HistoriaClinica {
         this.diagnostico = diagnostico;
     }
 
-    public float getTemperatura() {
+    public double getTemperatura() {
         return temperatura;
     }
 
-    public void setTemperatura(float temperatura) {
+    public void setTemperatura(double temperatura) {
         this.temperatura = temperatura;
     }
 

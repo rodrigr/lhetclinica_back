@@ -9,6 +9,13 @@ public class FormularioRegistro {
     private float temperatura;
     private String observaciones;
 
+    public FormularioRegistro(float tension_arterial, float frecuencia_cardiaca, float frecuencia_respiratoria, float temperatura, String observaciones) {
+        this.tension_arterial = tension_arterial;
+        this.frecuencia_cardiaca = frecuencia_cardiaca;
+        this.frecuencia_respiratoria = frecuencia_respiratoria;
+        this.temperatura = temperatura;
+        this.observaciones = observaciones;
+    }
 
     public float getTension_arterial() {
         return tension_arterial;
@@ -48,5 +55,16 @@ public class FormularioRegistro {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public boolean checkForNullOrEmpty(){
+        if(this.getTension_arterial() == 0 ||
+        this.getFrecuencia_cardiaca() == 0 ||
+        this.getFrecuencia_respiratoria() == 0 ||
+        this.getTemperatura() == 0){
+            return true;
+        }
+
+        return false;
     }
 }

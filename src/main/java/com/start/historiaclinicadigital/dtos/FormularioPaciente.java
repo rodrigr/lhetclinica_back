@@ -39,6 +39,39 @@ public class FormularioPaciente {
     private String relacion;
     private String direccionEmergencia;
 
+    public FormularioPaciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, String sexo, String telefono, boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, String grupo_sanguineo, String nombreEmergencia, String apellidoEmergencia, String emailEmergencia, String telefonoEmergencia, String telefono2Emergencia, String relacion, String direccionEmergencia) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.documento = documento;
+        this.fecha_nacimiento = fecha_nacimiento;
+        this.direccion = direccion;
+        this.sexo = sexo;
+        this.telefono = telefono;
+        this.viaje = viaje;
+        this.fecha_viaje = fecha_viaje;
+        this.destino_viaje = destino_viaje;
+        this.embarazo = embarazo;
+        this.semanas_gestacion = semanas_gestacion;
+        this.embarazos_previos = embarazos_previos;
+        this.antecedentes_personales = antecedentes_personales;
+        this.antecedentes_familiares = antecedentes_familiares;
+        this.medicacion_regular = medicacion_regular;
+        this.trabajo = trabajo;
+        this.convivientes = convivientes;
+        this.observaciones = observaciones;
+        this.obra_social = obra_social;
+        this.nombre_obra_social = nombre_obra_social;
+        this.grupo_sanguineo = grupo_sanguineo;
+        this.nombreEmergencia = nombreEmergencia;
+        this.apellidoEmergencia = apellidoEmergencia;
+        this.emailEmergencia = emailEmergencia;
+        this.telefonoEmergencia = telefonoEmergencia;
+        this.telefono2Emergencia = telefono2Emergencia;
+        this.relacion = relacion;
+        this.direccionEmergencia = direccionEmergencia;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -277,5 +310,29 @@ public class FormularioPaciente {
 
     public void setDireccionEmergencia(String direccionEmergencia) {
         this.direccionEmergencia = direccionEmergencia;
+    }
+
+    public boolean checkForNullOrEmpty(){
+        return this.getNombre() == null || this.getNombre().isEmpty() ||
+                this.getApellido() == null || this.getApellido().isEmpty() ||
+                this.getDocumento() == 0 ||
+                this.getFecha_nacimiento() == null ||
+                this.getDireccion() == null || this.getDireccion().isEmpty() ||
+                this.getSexo() == null || this.getSexo().isEmpty() ||
+                this.getTelefono() == null || this.getTelefono().isEmpty() ||
+                this.getAntecedentes_personales() == null || this.getAntecedentes_personales().isEmpty() ||
+                this.getAntecedentes_familiares() == null || this.getAntecedentes_familiares().isEmpty() ||
+                this.getTrabajo() == null || this.getTrabajo().isEmpty() ||
+                this.getGrupo_sanguineo() == null || this.getGrupo_sanguineo().isEmpty();
+    }
+
+    public boolean checkNullContactoEmergencia(){
+        return this.getNombreEmergencia() == null &&
+                this.getApellidoEmergencia() == null &&
+                this.getEmailEmergencia() == null &&
+                this.getTelefonoEmergencia() == null &&
+                this.getTelefono2Emergencia() == null &&
+                this.getRelacion() == null &&
+                this.getDireccionEmergencia() == null;
     }
 }

@@ -8,9 +8,11 @@ import com.start.historiaclinicadigital.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -40,7 +42,8 @@ public class AppController {
     ContactoEmergenciaRepository contactoEmergenciaRepository;
 
     @GetMapping("/pacientes")
-    public ResponseEntity<Map<String,Object>> getPacientes(Authentication authentication){
+    public ResponseEntity<Map<String,Object>> getPacientes(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -71,7 +74,8 @@ public class AppController {
     }
 
     @GetMapping("/pacientes/{pacienteId}/hc")
-    public ResponseEntity<Map<String,Object>> getHistoriaClinicas(@PathVariable Long pacienteId, Authentication authentication){
+    public ResponseEntity<Map<String,Object>> getHistoriaClinicas(@PathVariable Long pacienteId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -100,7 +104,8 @@ public class AppController {
     }
 
     @GetMapping("/pacientes/{pacienteId}/registros")
-    public ResponseEntity<Map<String,Object>> getRegistros(@PathVariable Long pacienteId, Authentication authentication){
+    public ResponseEntity<Map<String,Object>> getRegistros(@PathVariable Long pacienteId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -142,7 +147,8 @@ public class AppController {
     }
 
     @PostMapping("/pacientes")
-    public ResponseEntity<Map<String,Object>> addPaciente(Authentication authentication, FormularioPaciente formularioPaciente){
+    public ResponseEntity<Map<String,Object>> addPaciente(@RequestBody FormularioPaciente formularioPaciente){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -151,50 +157,57 @@ public class AppController {
             dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
             dto.put("user", authentication.getName());
             if (checkAuthority("MEDICO",authentication) || checkAuthority("ENFERMERO",authentication) ){
-                Paciente paciente = new Paciente(
-                        formularioPaciente.getNombre(),
-                        formularioPaciente.getApellido(),
-                        formularioPaciente.getEmail(),
-                        formularioPaciente.getDocumento(),
-                        formularioPaciente.getFecha_nacimiento(),
-                        formularioPaciente.getDireccion(),
-                        formularioPaciente.getSexo(),
-                        formularioPaciente.getTelefono()
+                if(formularioPaciente.checkForNullOrEmpty()){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
+                }else{
+                    Paciente paciente = new Paciente(
+                            formularioPaciente.getNombre(),
+                            formularioPaciente.getApellido(),
+                            formularioPaciente.getEmail(),
+                            formularioPaciente.getDocumento(),
+                            formularioPaciente.getFecha_nacimiento(),
+                            formularioPaciente.getDireccion(),
+                            formularioPaciente.getSexo(),
+                            formularioPaciente.getTelefono()
+                    );
+                    Anamnesis anamnesis = new Anamnesis(
+                            formularioPaciente.isViaje(),
+                            formularioPaciente.getFecha_viaje(),
+                            formularioPaciente.getDestino_viaje(),
+                            formularioPaciente.isEmbarazo(),
+                            formularioPaciente.getSemanas_gestacion(),
+                            formularioPaciente.getEmbarazos_previos(),
+                            formularioPaciente.getAntecedentes_personales(),
+                            formularioPaciente.getAntecedentes_familiares(),
+                            formularioPaciente.getMedicacion_regular(),
+                            formularioPaciente.getTrabajo(),
+                            formularioPaciente.getConvivientes(),
+                            formularioPaciente.getObservaciones(),
+                            formularioPaciente.isObra_social(),
+                            formularioPaciente.getNombre_obra_social(),
+                            formularioPaciente.getGrupo_sanguineo(),
+                            paciente
+                    );
+                    pacienteRepository.save(paciente);
+                    anamnesisRepository.save(anamnesis);
+                    if(!formularioPaciente.checkNullContactoEmergencia()){
+                        ContactoEmergencia contactoEmergencia = new ContactoEmergencia(
+                                formularioPaciente.getNombreEmergencia(),
+                                formularioPaciente.getApellidoEmergencia(),
+                                formularioPaciente.getEmailEmergencia(),
+                                formularioPaciente.getTelefonoEmergencia(),
+                                formularioPaciente.getTelefono2Emergencia(),
+                                formularioPaciente.getRelacion(),
+                                formularioPaciente.getDireccionEmergencia(),
+                                paciente
                         );
-                Anamnesis anamnesis = new Anamnesis(
-                        formularioPaciente.isViaje(),
-                        formularioPaciente.getFecha_viaje(),
-                        formularioPaciente.getDestino_viaje(),
-                        formularioPaciente.isEmbarazo(),
-                        formularioPaciente.getSemanas_gestacion(),
-                        formularioPaciente.getEmbarazos_previos(),
-                        formularioPaciente.getAntecedentes_personales(),
-                        formularioPaciente.getAntecedentes_familiares(),
-                        formularioPaciente.getMedicacion_regular(),
-                        formularioPaciente.getTrabajo(),
-                        formularioPaciente.getConvivientes(),
-                        formularioPaciente.getObservaciones(),
-                        formularioPaciente.isObra_social(),
-                        formularioPaciente.getNombre_obra_social(),
-                        formularioPaciente.getGrupo_sanguineo(),
-                        paciente
-                );
-                ContactoEmergencia contactoEmergencia = new ContactoEmergencia(
-                      formularioPaciente.getNombreEmergencia(),
-                      formularioPaciente.getApellidoEmergencia(),
-                      formularioPaciente.getEmailEmergencia(),
-                      formularioPaciente.getTelefonoEmergencia(),
-                      formularioPaciente.getTelefono2Emergencia(),
-                      formularioPaciente.getRelacion(),
-                      formularioPaciente.getDireccionEmergencia(),
-                      paciente
-                );
-                pacienteRepository.save(paciente);
-                anamnesisRepository.save(anamnesis);
-                contactoEmergenciaRepository.save(contactoEmergencia);
-                dto.put("status", "success");
-                dto.put("pacienteId", paciente.getId());
-                responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                        contactoEmergenciaRepository.save(contactoEmergencia);
+                    }
+                    dto.put("status", "success");
+                    dto.put("pacienteId", paciente.getId());
+                    responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                }
+
             }else{
                 responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
             }
@@ -203,7 +216,8 @@ public class AppController {
     }
 
     @PostMapping("/pacientes/{pacienteId}/hc")
-    public ResponseEntity<Map<String,Object>> addHC(@PathVariable long pacienteId, Authentication authentication, FormularioHC formularioHC){
+    public ResponseEntity<Map<String,Object>> addHC(@PathVariable long pacienteId, @RequestBody FormularioHC formularioHC){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -219,19 +233,23 @@ public class AppController {
                 }else if(medico == null){
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
                 }else {
-                    HistoriaClinica historiaClinica = new HistoriaClinica(
-                          LocalDateTime.now(),
-                          formularioHC.getDiagnostico(),
-                          formularioHC.getTemperatura(),
-                          formularioHC.getSintomas(),
-                          formularioHC.getTratamiento(),
-                          formularioHC.getObservaciones(),
-                          medico,
-                          paciente
-                    );
-                    historiaClinicaRepository.save(historiaClinica);
-                    dto.put("status", "success");
-                    responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    if(formularioHC.checkForNullOrEmpty()){
+                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
+                    } else {
+                        HistoriaClinica historiaClinica = new HistoriaClinica(
+                                LocalDateTime.now(),
+                                formularioHC.getDiagnostico(),
+                                formularioHC.getTemperatura(),
+                                formularioHC.getSintomas(),
+                                formularioHC.getTratamiento(),
+                                formularioHC.getObservaciones(),
+                                medico,
+                                paciente
+                        );
+                        historiaClinicaRepository.save(historiaClinica);
+                        dto.put("status", "success");
+                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    }
                 }
             }else{
                 responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
@@ -241,7 +259,8 @@ public class AppController {
     }
 
     @PostMapping("/pacientes/{pacienteId}/registros")
-    public ResponseEntity<Map<String,Object>> addRegistro(@PathVariable long pacienteId, Authentication authentication, FormularioRegistro formularioRegistro){
+    public ResponseEntity<Map<String,Object>> addRegistro(@PathVariable long pacienteId, @RequestBody FormularioRegistro formularioRegistro){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){
@@ -257,19 +276,23 @@ public class AppController {
                 }else if(enfermero == null){
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
                 }else {
-                    RegistroEnfermeria registroEnfermeria = new RegistroEnfermeria(
-                            LocalDateTime.now(),
-                            formularioRegistro.getTension_arterial(),
-                            formularioRegistro.getFrecuencia_cardiaca(),
-                            formularioRegistro.getFrecuencia_respiratoria(),
-                            formularioRegistro.getTemperatura(),
-                            formularioRegistro.getObservaciones(),
-                            enfermero,
-                            paciente
-                    );
-                    registroEnfermeriaRepository.save(registroEnfermeria);
-                    dto.put("status", "success");
-                    responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    if(formularioRegistro.checkForNullOrEmpty()){
+                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
+                    }else{
+                        RegistroEnfermeria registroEnfermeria = new RegistroEnfermeria(
+                                LocalDateTime.now(),
+                                formularioRegistro.getTension_arterial(),
+                                formularioRegistro.getFrecuencia_cardiaca(),
+                                formularioRegistro.getFrecuencia_respiratoria(),
+                                formularioRegistro.getTemperatura(),
+                                formularioRegistro.getObservaciones(),
+                                enfermero,
+                                paciente
+                        );
+                        registroEnfermeriaRepository.save(registroEnfermeria);
+                        dto.put("status", "success");
+                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    }
                 }
             }else{
                 responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
@@ -279,7 +302,8 @@ public class AppController {
     }
 
     @GetMapping("/all/pacientes")
-    public ResponseEntity<Map<String,Object>> getAllPacientes(Authentication authentication){
+    public ResponseEntity<Map<String,Object>> getAllPacientes(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication)){

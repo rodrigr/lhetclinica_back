@@ -34,6 +34,7 @@ public class HistoriaClinicaDigitalApplication {
 			Medico medico4 = new Medico("Maia","González","mai_med@hotmail.com",26722001,73897,passwordEncoder().encode("123456"));
 			Medico medico5 = new Medico("Raúl","Echeverría","raul.eche@gmail.com",15569240,39970,passwordEncoder().encode("Covid123"));
 
+
 			//Enfermeros
 			Enfermero enfermero1 = new Enfermero("Jose","Encardo","jose.encardo1@gmail.com",33921355,passwordEncoder().encode("Sensei14"));
 			Enfermero enfermero2 = new Enfermero("Micaela","Rodríguez","mic.rod5@youpmail.com",36886092,passwordEncoder().encode("123dfg"));
@@ -56,8 +57,8 @@ public class HistoriaClinicaDigitalApplication {
 			ContactoEmergencia contactoEmergencia5 = new ContactoEmergencia("Marisa","Quintas",",arisa.q_fe@hotmail.com","11-4678-2019","5478-8891","Cónyugue","Av. Chiclana 3200",paciente5);
 
 			//HCs
-			HistoriaClinica historiaClinica1 = new HistoriaClinica(LocalDateTime.parse("2020-03-15T15:00:35"),"Cancer de pulmón",36.6F,"Dificultad respiratoria, sangrado de nariz", "Reposo, respirador artificial, lavaje profundo","Se le hacen pruebas de respiracion profunda",medico5,paciente1);
-			HistoriaClinica historiaClinica2 = new HistoriaClinica(LocalDateTime.parse("2020-03-21T18:30:56"),"Covid-19",40.0F,"Fiebre, tos, dificultad respiratoria", "Reposo, respirador artificial, consumo de infusiones","Presenta una leve baja de fiebre",medico2,paciente2);
+			HistoriaClinica historiaClinica1 = new HistoriaClinica(LocalDateTime.parse("2020-03-15T15:00:35"),"Cancer de pulmón",36.6,"Dificultad respiratoria, sangrado de nariz", "Reposo, respirador artificial, lavaje profundo","Se le hacen pruebas de respiracion profunda",medico5,paciente1);
+			HistoriaClinica historiaClinica2 = new HistoriaClinica(LocalDateTime.parse("2020-03-21T18:30:56"),"Covid-19",40.0,"Fiebre, tos, dificultad respiratoria", "Reposo, respirador artificial, consumo de infusiones","Presenta una leve baja de fiebre",medico2,paciente2);
 
 
 			//Anamnesis
@@ -97,9 +98,6 @@ public class HistoriaClinicaDigitalApplication {
 
 			//Repo Anamnesis
 			anamnesisRepository.save(anamnesis1);
-
-
-
 		};
 	}
 

@@ -1,15 +1,19 @@
 package com.start.historiaclinicadigital.dtos;
 
-import java.time.LocalDateTime;
-
 public class FormularioHC {
     private String diagnostico;
-    private float temperatura;
+    private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
 
-
+    public FormularioHC(String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones) {
+        this.diagnostico = diagnostico;
+        this.temperatura = temperatura;
+        this.sintomas = sintomas;
+        this.tratamiento = tratamiento;
+        this.observaciones = observaciones;
+    }
 
     public String getDiagnostico() {
         return diagnostico;
@@ -19,11 +23,11 @@ public class FormularioHC {
         this.diagnostico = diagnostico;
     }
 
-    public float getTemperatura() {
+    public double getTemperatura() {
         return temperatura;
     }
 
-    public void setTemperatura(float temperatura) {
+    public void setTemperatura(double temperatura) {
         this.temperatura = temperatura;
     }
 
@@ -49,5 +53,20 @@ public class FormularioHC {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public boolean checkForNullOrEmpty(){
+        if(this.getDiagnostico() == null ||
+                this.getDiagnostico().isEmpty() ||
+                this.getTemperatura() == 0 ||
+                this.getSintomas() == null ||
+                this.getSintomas().isEmpty() ||
+                this.getTratamiento() == null ||
+                this.getTratamiento().isEmpty()
+        ){
+            return true;
+        }
+
+        return false;
     }
 }
