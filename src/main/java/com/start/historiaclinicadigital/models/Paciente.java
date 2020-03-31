@@ -109,6 +109,15 @@ public class Paciente extends Persona {
         return maxId;
     }
 
+    public long ultimoRegistro(Set<RegistroEnfermeria> registroEnfermeriaSet){
+        long maxId = registroEnfermeriaSet
+                .stream()
+                .max(Comparator.comparing(RegistroEnfermeria::getId))
+                .get()
+                .getId();
+        return maxId;
+    }
+
     public Map<String,Object> HistoriaClinicaDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("historiasClinicas", this.getHistoriaClinica()
@@ -160,6 +169,14 @@ public class Paciente extends Persona {
             );
         }else{
             dto.put("estado",null);
+        }
+        if(this.getRegistros().size() > 0){
+            dto.put("registro",this.getRegistros()
+                    .stream()
+                    .filter(registroEnfermeria -> registroEnfermeria.getId() == ultimoRegistro(this.getRegistros())).findFirst().get().makeRegistroEnfermeriaDTO()
+            );
+        }else{
+            dto.put("registro",null);
         }
 
     return dto;

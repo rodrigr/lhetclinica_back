@@ -41,6 +41,41 @@ public class AppController {
     @Autowired
     ContactoEmergenciaRepository contactoEmergenciaRepository;
 
+    @GetMapping("/user")
+    public ResponseEntity<Map<String,Object>> getUserData(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "authorized");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if (checkAuthority("MEDICO", authentication)) {
+                Medico medico = medicoRepository.findByEmail(authentication.getName()).orElse(null);
+                if(medico != null){
+                    dto.put("userData",medico.MedicoDTO());
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }else{
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }
+
+            }else if(checkAuthority("ENFERMERO", authentication)){
+                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
+                if(enfermero != null){
+                    dto.put("userData",enfermero.EnfermeroDTO());
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }else{
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }
+            }else{
+                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
+
     @GetMapping("/pacientes")
     public ResponseEntity<Map<String,Object>> getPacientes(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
