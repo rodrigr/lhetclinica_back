@@ -28,19 +28,19 @@ public class HistoriaClinicaDigitalApplication {
 	public CommandLineRunner initData(MedicoRepository medicoRepository, EnfermeroRepository enfermeroRepository, PacienteRepository pacienteRepository, HistoriaClinicaRepository historiaClinicaRepository, AnamnesisRepository anamnesisRepository, ContactoEmergenciaRepository contactoEmergenciaRepository, DataAnalystRepository dataAnalystRepository){
 		return args -> {
 			//Medicos
-			Medico medico1 = new Medico("Eduardo","Calleros","eduardo@hotmail.com",21888567,65024,passwordEncoder().encode("123qwe"));
-			Medico medico2 = new Medico("Nahuel","Fernández","nahuel.fernandez@gmail.com",35797832,44087,passwordEncoder().encode("Swr471"));
-			Medico medico3 = new Medico("Alexia","Domínguez","ale.dom@youpmail.com",30921548,77089,passwordEncoder().encode("Medica123"));
-			Medico medico4 = new Medico("Maia","González","mai_med@hotmail.com",26722001,73897,passwordEncoder().encode("123456"));
-			Medico medico5 = new Medico("Raúl","Echeverría","raul.eche@gmail.com",15569240,39970,passwordEncoder().encode("Covid123"));
+			Medico medico1 = new Medico("Eduardo","Calleros","eduardo@hotmail.com",21888567,65024,passwordEncoder().encode("123qwe"),"15-8543-9911");
+			Medico medico2 = new Medico("Nahuel","Fernández","nahuel.fernandez@gmail.com",35797832,44087,passwordEncoder().encode("Swr471"),"15-8543-9911");
+			Medico medico3 = new Medico("Alexia","Domínguez","ale.dom@youpmail.com",30921548,77089,passwordEncoder().encode("Medica123"),"15-8543-9911");
+			Medico medico4 = new Medico("Maia","González","mai_med@hotmail.com",26722001,73897,passwordEncoder().encode("123456"),"15-8543-9911");
+			Medico medico5 = new Medico("Raúl","Echeverría","raul.eche@gmail.com",15569240,39970,passwordEncoder().encode("Covid123"),"15-8543-9911");
 
 
 			//Enfermeros
-			Enfermero enfermero1 = new Enfermero("Jose","Encardo","jose.encardo1@gmail.com",33921355,passwordEncoder().encode("Sensei14"));
-			Enfermero enfermero2 = new Enfermero("Micaela","Rodríguez","mic.rod5@youpmail.com",36886092,passwordEncoder().encode("123dfg"));
-			Enfermero enfermero3 = new Enfermero("Gustavo","García","gustav_supernova@hotmail.com.com",29542833,passwordEncoder().encode("56asd1"));
-			Enfermero enfermero4 = new Enfermero("Paula","Marquéz","paula.mar@gmail.com",20652310,passwordEncoder().encode("Enfer147"));
-			Enfermero enfermero5 = new Enfermero("Patricia","López","patricia.lopez07@gmail.com",40512117,passwordEncoder().encode("12345678p"));
+			Enfermero enfermero1 = new Enfermero("Jose","Encardo","jose.encardo1@gmail.com",33921355,passwordEncoder().encode("Sensei14"),"15-8543-9911");
+			Enfermero enfermero2 = new Enfermero("Micaela","Rodríguez","mic.rod5@youpmail.com",36886092,passwordEncoder().encode("123dfg"),"15-8543-9911");
+			Enfermero enfermero3 = new Enfermero("Gustavo","García","gustav_supernova@hotmail.com.com",29542833,passwordEncoder().encode("56asd1"),"15-8543-9911");
+			Enfermero enfermero4 = new Enfermero("Paula","Marquéz","paula.mar@gmail.com",20652310,passwordEncoder().encode("Enfer147"),"15-8543-9911");
+			Enfermero enfermero5 = new Enfermero("Patricia","López","patricia.lopez07@gmail.com",40512117,passwordEncoder().encode("12345678p"),"15-8543-9911");
 
 			//Pacientes
 			Paciente paciente1 = new Paciente("Juan","Rios","juan.rios@gmail.com",43997867, LocalDate.parse("2002-09-24"),"Av. De Mayo 2567","M","15-2098-1145");
