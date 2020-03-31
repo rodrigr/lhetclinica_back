@@ -25,7 +25,7 @@ public class HistoriaClinicaDigitalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(MedicoRepository medicoRepository, EnfermeroRepository enfermeroRepository, PacienteRepository pacienteRepository, HistoriaClinicaRepository historiaClinicaRepository, AnamnesisRepository anamnesisRepository, ContactoEmergenciaRepository contactoEmergenciaRepository){
+	public CommandLineRunner initData(MedicoRepository medicoRepository, EnfermeroRepository enfermeroRepository, PacienteRepository pacienteRepository, HistoriaClinicaRepository historiaClinicaRepository, AnamnesisRepository anamnesisRepository, ContactoEmergenciaRepository contactoEmergenciaRepository, DataAnalystRepository dataAnalystRepository){
 		return args -> {
 			//Medicos
 			Medico medico1 = new Medico("Eduardo","Calleros","eduardo@hotmail.com",21888567,65024,passwordEncoder().encode("123qwe"));
@@ -98,6 +98,10 @@ public class HistoriaClinicaDigitalApplication {
 
 			//Repo Anamnesis
 			anamnesisRepository.save(anamnesis1);
+
+			//Data
+			DataAnalyst dataAnalyst1 = new DataAnalyst("Rodrigo", "Garcia Ribeiro", "rj.garcia.ribeiro@gmail.com", 37931982, passwordEncoder().encode("rodridata123"));
+			dataAnalystRepository.save(dataAnalyst1);
 		};
 	}
 
