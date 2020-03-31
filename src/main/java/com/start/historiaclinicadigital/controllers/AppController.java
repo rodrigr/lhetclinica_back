@@ -324,7 +324,7 @@ public class AppController {
     }
 
     @PatchMapping("/pacientes/{pacienteId}/registros/{registroId}")
-    public ResponseEntity<Map<String,Object>> updateHC(@PathVariable long pacienteId, @PathVariable long registroId, @RequestBody FormularioRegistro formularioRegistro){
+    public ResponseEntity<Map<String,Object>> updateRegistroEnfermeria(@PathVariable long pacienteId, @PathVariable long registroId, @RequestBody FormularioRegistro formularioRegistro){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
         Map<String, Object> dto = new LinkedHashMap<>();
@@ -375,6 +375,62 @@ public class AppController {
         return responseEntity;
     }
 
+    @PatchMapping("/api/pacientes/{pacienteId}/contactos/{contactoId}")
+    public ResponseEntity<Map<String,Object>> updateContacto(@PathVariable long pacienteId, @PathVariable long contactoId, @RequestBody FormularioContacto formularioContacto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if(checkAuthority("MEDICO",authentication)){
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                ContactoEmergencia contactoEmergencia = contactoEmergenciaRepository.findById(contactoId).orElse(null);
+                Medico medico = medicoRepository.findByEmail(authentication.getName()).orElse(null);
+                if(paciente == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "El paciente no existe"), HttpStatus.NOT_FOUND);
+                }else if(contactoEmergencia == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "El contacto de emergencia solicitado no existe"), HttpStatus.NOT_FOUND);
+                }else if(paciente.getContactoEmergencia().stream().noneMatch(contacto -> contacto.getId() == contactoId)){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "El contacto de emergencia solicitado no pertenece al paciente indicado"), HttpStatus.CONFLICT);
+                }else if(medico == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }else{
+                    if(formularioContacto.getNombreEmergencia() != null && !formularioContacto.getNombreEmergencia().isEmpty()){
+                        formularioContacto.setNombreEmergencia(formularioContacto.getNombreEmergencia());
+                    }
+                    if(formularioContacto.getApellidoEmergencia() != null && !formularioContacto.getApellidoEmergencia().isEmpty()){
+                        formularioContacto.setApellidoEmergencia(formularioContacto.getApellidoEmergencia());
+                    }
+                    if(formularioContacto.getEmailEmergencia() != null && !formularioContacto.getEmailEmergencia().isEmpty()){
+                        formularioContacto.setEmailEmergencia(formularioContacto.getEmailEmergencia());
+                    }
+                    if(formularioContacto.getTelefonoEmergencia() != null && !formularioContacto.getTelefonoEmergencia().isEmpty()){
+                        formularioContacto.setTelefonoEmergencia(formularioContacto.getTelefonoEmergencia());
+                    }
+                    if(formularioContacto.getTelefono2Emergencia() != null && !formularioContacto.getTelefono2Emergencia().isEmpty()){
+                        formularioContacto.setTelefono2Emergencia(formularioContacto.getTelefono2Emergencia());
+                    }
+                    if(formularioContacto.getRelacion() != null && !formularioContacto.getRelacion().isEmpty()){
+                        formularioContacto.setRelacion(formularioContacto.getRelacion());
+                    }
+                    if(formularioContacto.getDireccionEmergencia() != null && !formularioContacto.getDireccionEmergencia().isEmpty()){
+                        formularioContacto.setDireccionEmergencia(formularioContacto.getDireccionEmergencia());
+                    }
+
+                    contactoEmergenciaRepository.save(contactoEmergencia);
+                    dto.put("status", "success");
+                    responseEntity = new ResponseEntity<>(dto, HttpStatus.OK);
+                }
+
+            }else{
+                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
 
 
     @GetMapping("/pacientes/{pacienteId}/registros")
