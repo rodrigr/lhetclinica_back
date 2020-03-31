@@ -16,10 +16,20 @@ public abstract class Persona {
     private String email;
     private int documento;
     private String password;
+    private String telefono;
 
     public Persona (){}
 
-    public Persona(String nombre, String apellido, String email, int documento,String password) {
+    public Persona(String nombre, String apellido, String email, int documento, String password, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.documento = documento;
+        this.password = password;
+        this.telefono = telefono;
+    }
+
+    public Persona(String nombre, String apellido, String email, int documento, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -40,6 +50,13 @@ public abstract class Persona {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
+    }
+
+    public Persona(String nombre, String apellido, String email, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.telefono = telefono;
     }
 
     public long getId() {
@@ -89,4 +106,8 @@ public abstract class Persona {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getTelefono() { return telefono; }
+
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 }

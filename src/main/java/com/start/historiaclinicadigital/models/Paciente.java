@@ -26,11 +26,10 @@ public class Paciente extends Persona {
     public Paciente(){};
 
     public Paciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, String sexo, String telefono) {
-        super(nombre, apellido, email, documento);
+        super(nombre, apellido, email, documento, telefono);
         this.fecha_nacimiento = fecha_nacimiento;
         this.direccion = direccion;
         this.sexo = sexo;
-        this.telefono = telefono;
     }
 
     public LocalDate getFecha_nacimiento() {

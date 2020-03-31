@@ -4,9 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -18,10 +16,11 @@ public class Medico extends Persona {
 
     public Medico(){}
 
-    public Medico(String nombre, String apellido, String email, int documento, int matricula, String password) {
-        super(nombre, apellido, email, documento,password);
+    public Medico(String nombre, String apellido, String email, int documento, int matricula, String password, String telefono) {
+        super(nombre, apellido, email, documento,password, telefono);
         this.matricula = matricula;
     }
+
 
     public int getMatricula() {
         return matricula;
@@ -42,5 +41,17 @@ public class Medico extends Persona {
 
     public List<Paciente> getPacientes(){
         return this.historiaClinicas.stream().map(HistoriaClinica::getPaciente).collect(Collectors.toList());
+    }
+
+    public Map<String,Object> MedicoDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("nombre",this.getNombre());
+        dto.put("apellido",this.getApellido());
+        dto.put("email",this.getEmail());
+        dto.put("telefono",this.getTelefono());
+        dto.put("matricula",this.getMatricula());
+
+        return dto;
     }
 }
