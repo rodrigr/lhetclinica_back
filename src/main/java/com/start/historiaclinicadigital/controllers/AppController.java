@@ -40,6 +40,10 @@ public class AppController {
     AnamnesisRepository anamnesisRepository;
     @Autowired
     ContactoEmergenciaRepository contactoEmergenciaRepository;
+    @Autowired
+    HemogramaRepository hemogramaRepository;
+    @Autowired
+    EritrosedimentacionRepository eritrosedimentacionRepository;
 
     @GetMapping("/user")
     public ResponseEntity<Map<String,Object>> getUserData(){
@@ -290,10 +294,21 @@ public class AppController {
                                 formularioHC.getSintomas(),
                                 formularioHC.getTratamiento(),
                                 formularioHC.getObservaciones(),
+                                formularioHC.getPcr(),
                                 medico,
                                 paciente
                         );
+
                         historiaClinicaRepository.save(historiaClinica);
+
+                        if(!formularioHC.checkNullHemograma()){
+                            Hemograma hemograma = new Hemograma(formularioHC.getGlobulos_blancos(),formularioHC.getGlobulos_rojos(),formularioHC.getPlaquetas(),historiaClinica);
+                            hemogramaRepository.save(hemograma);
+                        }
+                        if(!formularioHC.checkNullEritrosedimentacion()){
+                            Eritrosedimentacion eritrosedimentacion = new Eritrosedimentacion(formularioHC.getEritrosedimentacion(),historiaClinica);
+                            eritrosedimentacionRepository.save(eritrosedimentacion);
+                        }
                         dto.put("status", "success");
                         responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
                     }

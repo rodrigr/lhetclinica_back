@@ -1,5 +1,7 @@
 package com.start.historiaclinicadigital.models;
 
+import com.start.historiaclinicadigital.enums.PCR;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import javax.persistence.*;
@@ -8,16 +10,23 @@ import java.util.Map;
 import java.util.Set;
 @Entity
 public class HistoriaClinica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+
     private LocalDateTime fecha_hora;
     private String diagnostico;
     private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private PCR pcr;
+    @OneToMany(mappedBy = "historiaClinica", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Medicamento> medicamentos = new HashSet<>();
+    @OneToOne(mappedBy = "historiaClinica")
+    private Hemograma hemograma;
+    @OneToOne(mappedBy = "historiaClinica")
+    private Eritrosedimentacion eritrosedimentacion;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="medico_id")
@@ -28,14 +37,12 @@ public class HistoriaClinica {
     @JoinColumn(name="Paciente_id")
     private Paciente paciente;
 
-    @OneToMany(mappedBy = "historiaClinica", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Medicamento> medicamentos = new HashSet<>();
 
 
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones,Medico medico, Paciente paciente) {
+    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, Medico medico, Paciente paciente) {
         this.fecha_hora = fecha_hora;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
@@ -44,6 +51,7 @@ public class HistoriaClinica {
         this.observaciones = observaciones;
         this.medico = medico;
         this.paciente = paciente;
+        this.pcr = pcr;
     }
 
     public LocalDateTime getFecha_hora() {
@@ -122,6 +130,31 @@ public class HistoriaClinica {
     public long getId() {
         return id;
     }
+
+    public PCR getPcr() {
+        return pcr;
+    }
+
+    public void setPcr(PCR pcr) {
+        this.pcr = pcr;
+    }
+
+    public Hemograma getHemograma() {
+        return hemograma;
+    }
+
+    public void setHemograma(Hemograma hemograma) {
+        this.hemograma = hemograma;
+    }
+
+    public Eritrosedimentacion getEritrosedimentacion() {
+        return eritrosedimentacion;
+    }
+
+    public void setEritrosedimentacion(Eritrosedimentacion eritrosedimentacion) {
+        this.eritrosedimentacion = eritrosedimentacion;
+    }
+
     //DTOs
     public Map<String,Object> makeHistoriaClinicaDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -132,7 +165,9 @@ public class HistoriaClinica {
         dto.put("sintomas",this.getSintomas());
         dto.put("tratamiento",this.getTratamiento());
         dto.put("observaciones",this.getObservaciones());
-
+        dto.put("pcr",this.getPcr());
+        dto.put("hemograma", this.getHemograma() != null ? this.getHemograma().hemogramaDTO() : null);
+        dto.put("eritrosedimentacion", this.getEritrosedimentacion() != null ? this.getEritrosedimentacion().getValor() : null);
         return dto;
     }
 
