@@ -1,7 +1,11 @@
 package com.start.historiaclinicadigital.models;
+import com.start.historiaclinicadigital.enums.CondicionPreexistente;
+import com.start.historiaclinicadigital.enums.GrupoSanguineo;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -20,28 +24,27 @@ public class Anamnesis {
     private boolean embarazo;
     private int semanas_gestacion;
     private int embarazos_previos;
-    private String antecedentes_personales;
-    private String antecedentes_familiares;
+    @ElementCollection
+    private List<CondicionPreexistente> condiciones_preexistentes;
     private String medicacion_regular;
     private String trabajo;
     private int convivientes;
     private String observaciones;
     private boolean obra_social;
     private String nombre_obra_social;
-    private String grupo_sanguineo;
+    private GrupoSanguineo grupo_sanguineo;
 
     public Anamnesis() {
     }
 
-    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, String grupo_sanguineo,Paciente paciente) {
+    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, Paciente paciente) {
         this.viaje = viaje;
         this.fecha_viaje = fecha_viaje;
         this.destino_viaje = destino_viaje;
         this.embarazo = embarazo;
         this.semanas_gestacion = semanas_gestacion;
         this.embarazos_previos = embarazos_previos;
-        this.antecedentes_personales = antecedentes_personales;
-        this.antecedentes_familiares = antecedentes_familiares;
+        this.condiciones_preexistentes = condiciones_preexistentes;
         this.medicacion_regular = medicacion_regular;
         this.trabajo = trabajo;
         this.convivientes = convivientes;
@@ -100,20 +103,12 @@ public class Anamnesis {
         this.embarazos_previos = embarazos_previos;
     }
 
-    public String getAntecedentes_personales() {
-        return antecedentes_personales;
+    public List<CondicionPreexistente> getCondiciones_preexistentes() {
+        return condiciones_preexistentes;
     }
 
-    public void setAntecedentes_personales(String antecedentes_personales) {
-        this.antecedentes_personales = antecedentes_personales;
-    }
-
-    public String getAntecedentes_familiares() {
-        return antecedentes_familiares;
-    }
-
-    public void setAntecedentes_familiares(String antecedentes_familiares) {
-        this.antecedentes_familiares = antecedentes_familiares;
+    public void setCondiciones_preexistentes(List<CondicionPreexistente> condiciones_preexistentes) {
+        this.condiciones_preexistentes = condiciones_preexistentes;
     }
 
     public String getMedicacion_regular() {
@@ -168,11 +163,11 @@ public class Anamnesis {
         this.obra_social = obra_social;
     }
 
-    public String getGrupo_sanguineo() {
+    public GrupoSanguineo getGrupo_sanguineo() {
         return grupo_sanguineo;
     }
 
-    public void setGrupo_sanguineo(String grupo_sanguineo) {
+    public void setGrupo_sanguineo(GrupoSanguineo grupo_sanguineo) {
         this.grupo_sanguineo = grupo_sanguineo;
     }
 
@@ -194,8 +189,7 @@ public class Anamnesis {
         dto.put("embarazo",this.isEmbarazo());
         dto.put("semanasGestacion",this.getSemanas_gestacion());
         dto.put("embarazosPrevios",this.getEmbarazos_previos());
-        dto.put("antecedentesPersonales",this.getAntecedentes_personales());
-        dto.put("antecedentesFamiliares",this.getAntecedentes_familiares());
+        dto.put("condicionesPreexistentes",this.getCondiciones_preexistentes());
         dto.put("medicacionRegular",this.getMedicacion_regular());
         dto.put("convivientes",this.getConvivientes());
         dto.put("obraSocial", this.isObra_social());

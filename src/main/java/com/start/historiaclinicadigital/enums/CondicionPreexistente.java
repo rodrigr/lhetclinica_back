@@ -1,0 +1,5 @@
+package com.start.historiaclinicadigital.enums;
+
+public enum CondicionPreexistente {
+    DIABETES,HIPERTENSION,CARDIOPATIAS,DISLIPIDEMIA,TABAQUISMO,CIRUGIAS,TRATAMIENTO_ONCOLOGICO, ASMA, EPOC, NEUMOPATIAS
+}

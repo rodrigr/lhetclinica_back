@@ -1,5 +1,7 @@
 package com.start.historiaclinicadigital.models;
 
+import com.start.historiaclinicadigital.enums.Sexo;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -11,7 +13,7 @@ public class Paciente extends Persona {
 
     private LocalDate fecha_nacimiento;
     private String direccion;
-    private String sexo;
+    private Sexo sexo;
     private String telefono;
 
     @OneToOne(mappedBy = "paciente")
@@ -25,7 +27,7 @@ public class Paciente extends Persona {
 
     public Paciente(){};
 
-    public Paciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, String sexo, String telefono) {
+    public Paciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, Sexo sexo, String telefono) {
         super(nombre, apellido, email, documento, telefono);
         this.fecha_nacimiento = fecha_nacimiento;
         this.direccion = direccion;
@@ -48,11 +50,11 @@ public class Paciente extends Persona {
         this.direccion = direccion;
     }
 
-    public String getSexo() {
+    public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }
 

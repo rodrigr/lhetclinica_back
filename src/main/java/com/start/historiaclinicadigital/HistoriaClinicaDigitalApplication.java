@@ -1,5 +1,8 @@
 package com.start.historiaclinicadigital;
 
+import com.start.historiaclinicadigital.enums.CondicionPreexistente;
+import com.start.historiaclinicadigital.enums.GrupoSanguineo;
+import com.start.historiaclinicadigital.enums.Sexo;
 import com.start.historiaclinicadigital.models.*;
 import com.start.historiaclinicadigital.repositories.*;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class HistoriaClinicaDigitalApplication {
@@ -43,11 +47,11 @@ public class HistoriaClinicaDigitalApplication {
 			Enfermero enfermero5 = new Enfermero("Patricia","López","patricia.lopez07@gmail.com",40512117,passwordEncoder().encode("12345678p"),"15-8543-9911");
 
 			//Pacientes
-			Paciente paciente1 = new Paciente("Juan","Rios","juan.rios@gmail.com",43997867, LocalDate.parse("2002-09-24"),"Av. De Mayo 2567","M","15-2098-1145");
-			Paciente paciente2 = new Paciente("Miguel","Chambilla","miguecham@gmail.com",40127007, LocalDate.parse("2001-02-28"),"Av. Cristianía 3768","M","11-4467-2709");
-			Paciente paciente3 = new Paciente("Liliana","Manrique","lil.manrique@gmail.com",36997109, LocalDate.parse("1999-08-09"),"El Poncho 1567","F","15-2456-7890");
-			Paciente paciente4 = new Paciente("Marcos","Olivares","marcos.olivares@gmail.com",27086993, LocalDate.parse("1991-01-05"),"Av. Juan de Garay 5346","M","11-2437-0907");
-			Paciente paciente5 = new Paciente("Carla","Ferme","fermec@gmail.com",30998745, LocalDate.parse("1994-07-09"),"Av. Chiclana 3200","F","11-2367-4458");
+			Paciente paciente1 = new Paciente("Juan","Rios","juan.rios@gmail.com",43997867, LocalDate.parse("2002-09-24"),"Av. De Mayo 2567", Sexo.M,"15-2098-1145");
+			Paciente paciente2 = new Paciente("Miguel","Chambilla","miguecham@gmail.com",40127007, LocalDate.parse("2001-02-28"),"Av. Cristianía 3768",Sexo.M,"11-4467-2709");
+			Paciente paciente3 = new Paciente("Liliana","Manrique","lil.manrique@gmail.com",36997109, LocalDate.parse("1999-08-09"),"El Poncho 1567",Sexo.F,"15-2456-7890");
+			Paciente paciente4 = new Paciente("Marcos","Olivares","marcos.olivares@gmail.com",27086993, LocalDate.parse("1991-01-05"),"Av. Juan de Garay 5346",Sexo.M,"11-2437-0907");
+			Paciente paciente5 = new Paciente("Carla","Ferme","fermec@gmail.com",30998745, LocalDate.parse("1994-07-09"),"Av. Chiclana 3200",Sexo.F,"11-2367-4458");
 
 			//Contactos de Emergencia
 			ContactoEmergencia contactoEmergencia1 = new ContactoEmergencia("Maria Eugenia","Ríos","mariu@gmail.com","15-2234-5766",null,"Madre","Av. De Mayo 2567",paciente1);
@@ -62,7 +66,7 @@ public class HistoriaClinicaDigitalApplication {
 
 
 			//Anamnesis
-			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0,"","","","",2,"",true,"","",paciente1);
+			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0, Arrays.asList(CondicionPreexistente.ASMA),"","",2,"",true,"", GrupoSanguineo.A_NEGATIVO,paciente1);
 
 			//Repo Meds
 			medicoRepository.save(medico1);

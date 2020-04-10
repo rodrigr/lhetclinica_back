@@ -139,8 +139,7 @@ public class AppController {
                             formularioPaciente.isEmbarazo(),
                             formularioPaciente.getSemanas_gestacion(),
                             formularioPaciente.getEmbarazos_previos(),
-                            formularioPaciente.getAntecedentes_personales(),
-                            formularioPaciente.getAntecedentes_familiares(),
+                            formularioPaciente.getCondiciones_preexistentes(),
                             formularioPaciente.getMedicacion_regular(),
                             formularioPaciente.getTrabajo(),
                             formularioPaciente.getConvivientes(),
@@ -215,7 +214,7 @@ public class AppController {
                     if(formularioPaciente.getDireccion() != null && !formularioPaciente.getDireccion().isEmpty()){
                         paciente.setDireccion(formularioPaciente.getDireccion());
                     }
-                    if(formularioPaciente.getSexo() != null && !formularioPaciente.getSexo().isEmpty()){
+                    if(formularioPaciente.getSexo() != null){
                         paciente.setSexo(formularioPaciente.getSexo());
                     }
                     if(formularioPaciente.getTelefono() != null && !formularioPaciente.getTelefono().isEmpty()){

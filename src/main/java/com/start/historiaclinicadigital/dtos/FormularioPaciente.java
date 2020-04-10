@@ -1,6 +1,11 @@
 package com.start.historiaclinicadigital.dtos;
 
+import com.start.historiaclinicadigital.enums.CondicionPreexistente;
+import com.start.historiaclinicadigital.enums.GrupoSanguineo;
+import com.start.historiaclinicadigital.enums.Sexo;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class FormularioPaciente {
     //Datos Personales
@@ -10,7 +15,7 @@ public class FormularioPaciente {
     private int documento;
     private LocalDate fecha_nacimiento;
     private String direccion;
-    private String sexo;
+    private Sexo sexo;
     private String telefono;
 
     //Anamnesis
@@ -20,15 +25,14 @@ public class FormularioPaciente {
     private boolean embarazo;
     private int semanas_gestacion;
     private int embarazos_previos;
-    private String antecedentes_personales;
-    private String antecedentes_familiares;
+    private List<CondicionPreexistente> condiciones_preexistentes;
     private String medicacion_regular;
     private String trabajo;
     private int convivientes;
     private String observaciones;
     private boolean obra_social;
     private String nombre_obra_social;
-    private String grupo_sanguineo;
+    private GrupoSanguineo grupo_sanguineo;
 
     //Contacto de Emergencia
     private String nombreEmergencia;
@@ -39,7 +43,7 @@ public class FormularioPaciente {
     private String relacion;
     private String direccionEmergencia;
 
-    public FormularioPaciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, String sexo, String telefono, boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, String antecedentes_personales, String antecedentes_familiares, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, String grupo_sanguineo, String nombreEmergencia, String apellidoEmergencia, String emailEmergencia, String telefonoEmergencia, String telefono2Emergencia, String relacion, String direccionEmergencia) {
+    public FormularioPaciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, Sexo sexo, String telefono, boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, String nombreEmergencia, String apellidoEmergencia, String emailEmergencia, String telefonoEmergencia, String telefono2Emergencia, String relacion, String direccionEmergencia) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -54,8 +58,7 @@ public class FormularioPaciente {
         this.embarazo = embarazo;
         this.semanas_gestacion = semanas_gestacion;
         this.embarazos_previos = embarazos_previos;
-        this.antecedentes_personales = antecedentes_personales;
-        this.antecedentes_familiares = antecedentes_familiares;
+        this.condiciones_preexistentes = condiciones_preexistentes;
         this.medicacion_regular = medicacion_regular;
         this.trabajo = trabajo;
         this.convivientes = convivientes;
@@ -120,11 +123,11 @@ public class FormularioPaciente {
         this.direccion = direccion;
     }
 
-    public String getSexo() {
+    public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }
 
@@ -184,20 +187,12 @@ public class FormularioPaciente {
         this.embarazos_previos = embarazos_previos;
     }
 
-    public String getAntecedentes_personales() {
-        return antecedentes_personales;
+    public List<CondicionPreexistente> getCondiciones_preexistentes() {
+        return condiciones_preexistentes;
     }
 
-    public void setAntecedentes_personales(String antecedentes_personales) {
-        this.antecedentes_personales = antecedentes_personales;
-    }
-
-    public String getAntecedentes_familiares() {
-        return antecedentes_familiares;
-    }
-
-    public void setAntecedentes_familiares(String antecedentes_familiares) {
-        this.antecedentes_familiares = antecedentes_familiares;
+    public void setCondiciones_preexistentes(List<CondicionPreexistente> condiciones_preexistentes) {
+        this.condiciones_preexistentes = condiciones_preexistentes;
     }
 
     public String getMedicacion_regular() {
@@ -248,11 +243,11 @@ public class FormularioPaciente {
         this.nombre_obra_social = nombre_obra_social;
     }
 
-    public String getGrupo_sanguineo() {
+    public GrupoSanguineo getGrupo_sanguineo() {
         return grupo_sanguineo;
     }
 
-    public void setGrupo_sanguineo(String grupo_sanguineo) {
+    public void setGrupo_sanguineo(GrupoSanguineo grupo_sanguineo) {
         this.grupo_sanguineo = grupo_sanguineo;
     }
 
@@ -318,12 +313,11 @@ public class FormularioPaciente {
                 this.getDocumento() == 0 ||
                 this.getFecha_nacimiento() == null ||
                 this.getDireccion() == null || this.getDireccion().isEmpty() ||
-                this.getSexo() == null || this.getSexo().isEmpty() ||
+                this.getSexo() == null ||
                 this.getTelefono() == null || this.getTelefono().isEmpty() ||
-                this.getAntecedentes_personales() == null || this.getAntecedentes_personales().isEmpty() ||
-                this.getAntecedentes_familiares() == null || this.getAntecedentes_familiares().isEmpty() ||
+                this.getCondiciones_preexistentes() == null || this.getCondiciones_preexistentes().isEmpty() ||
                 this.getTrabajo() == null || this.getTrabajo().isEmpty() ||
-                this.getGrupo_sanguineo() == null || this.getGrupo_sanguineo().isEmpty();
+                this.getGrupo_sanguineo() == null;
     }
 
     public boolean checkNullContactoEmergencia(){
