@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -44,6 +43,12 @@ public class AppController {
     HemogramaRepository hemogramaRepository;
     @Autowired
     EritrosedimentacionRepository eritrosedimentacionRepository;
+
+    /*==================================
+    ====================================
+         APIs info usuarios (GET)
+    ===================================
+    =================================*/
 
     @GetMapping("/user")
     public ResponseEntity<Map<String,Object>> getUserData(){
@@ -80,6 +85,12 @@ public class AppController {
         return responseEntity;
     }
 
+    /*==================================
+    ====================================
+      APIs Pacientes (GET, POST, PATCH)
+    ===================================
+    =================================*/
+
     @GetMapping("/pacientes")
     public ResponseEntity<Map<String,Object>> getPacientes(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -92,18 +103,26 @@ public class AppController {
             dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
             dto.put("user", authentication.getName());
             if (checkAuthority("MEDICO", authentication)) {
-                Medico medico = medicoRepository.findByEmail(authentication.getName()).get();
-                dto.put("nombre",medico.getNombre());
-                dto.put("apellido",medico.getApellido());
-                dto.put("matrícula",medico.getMatricula());
-                dto.put("pacientes",medico.getPacientes().stream().map(Paciente::PacienteDTO));
-                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                Medico medico = medicoRepository.findByEmail(authentication.getName()).orElse(null);
+                if(medico == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                }else{
+                    dto.put("nombre",medico.getNombre());
+                    dto.put("apellido",medico.getApellido());
+                    dto.put("matrícula",medico.getMatricula());
+                    dto.put("pacientes",medico.getPacientes().stream().map(Paciente::PacienteDTO));
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }
             }else if (checkAuthority("ENFERMERO", authentication)) {
-                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).get();
-                dto.put("nombre",enfermero.getNombre());
-                dto.put("apellido",enfermero.getApellido());
-                dto.put("pacientes",enfermero.getPacientes().stream().map(Paciente::PacienteDTO));
-                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
+                if(enfermero == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                } else{
+                    dto.put("nombre",enfermero.getNombre());
+                    dto.put("apellido",enfermero.getApellido());
+                    dto.put("pacientes",enfermero.getPacientes().stream().map(Paciente::PacienteDTO));
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }
             } else{
                 responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
             }
@@ -237,6 +256,12 @@ public class AppController {
         return responseEntity;
     }
 
+    /*==================================
+    ====================================
+      APIs HCs (GET, POST, PATCH)
+    ===================================
+    =================================*/
+
     @GetMapping("/pacientes/{pacienteId}/hc")
     public ResponseEntity<Map<String,Object>> getHistoriaClinicas(@PathVariable Long pacienteId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -249,15 +274,17 @@ public class AppController {
             dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
             dto.put("user", authentication.getName());
             if (checkAuthority("MEDICO", authentication)) {
-                Medico medico = medicoRepository.findByEmail(authentication.getName()).get();
-                Optional<Paciente> paciente = pacienteRepository.findById(pacienteId);
-                if(!paciente.isPresent()){
+                Medico medico = medicoRepository.findByEmail(authentication.getName()).orElse(null);
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                if(medico == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                }else if(paciente == null){
                     responseEntity = new ResponseEntity<>(makeMap("error","paciente no encontrado"),HttpStatus.NOT_FOUND);
-                }else if(!medico.getPacientes().contains(paciente.get())){
+                }else if(!medico.getPacientes().contains(paciente)){
                     responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
                 } else{
-                    dto.put("paciente",paciente.get().PacienteDTO());
-                    dto.put("historiasClinicas",paciente.get().getHistoriaClinica().stream().map(HistoriaClinica::makeHistoriaClinicaDTO));
+                    dto.put("paciente",paciente.PacienteDTO());
+                    dto.put("historiasClinicas",paciente.getHistoriaClinica().stream().map(HistoriaClinica::makeHistoriaClinicaDTO));
                     responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
                 }
             }else{
@@ -391,6 +418,102 @@ public class AppController {
         return responseEntity;
     }
 
+    /*==================================
+    ====================================
+      APIs REs (GET, POST, PATCH)
+    ===================================
+    =================================*/
+
+    @GetMapping("/pacientes/{pacienteId}/registros")
+    public ResponseEntity<Map<String,Object>> getRegistros(@PathVariable Long pacienteId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "authorized");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if (checkAuthority("ENFERMERO", authentication)) {
+                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                if(enfermero == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                }else if(paciente == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","paciente no encontrado"),HttpStatus.NOT_FOUND);
+                }else if(!enfermero.getPacientes().contains(paciente)){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                } else{
+                    dto.put("paciente",paciente.PacienteDTO());
+                    dto.put("registros",paciente.getRegistros().stream().map(RegistroEnfermeria::makeRegistroEnfermeriaDTO));
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }
+            } else if (checkAuthority("MEDICO", authentication)) {
+                Medico medico = medicoRepository.findByEmail(authentication.getName()).orElse(null);
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                if(medico == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                }else if(paciente == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error","paciente no encontrado"),HttpStatus.NOT_FOUND);
+                }else if(!medico.getPacientes().contains(paciente)){
+                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+                } else{
+                    dto.put("paciente",paciente.PacienteDTO());
+                    dto.put("registros",paciente.getRegistros().stream().map(RegistroEnfermeria::makeRegistroEnfermeriaDTO));
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }
+            }
+            else{
+                responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/pacientes/{pacienteId}/registros")
+    public ResponseEntity<Map<String,Object>> addRegistro(@PathVariable long pacienteId, @RequestBody FormularioRegistro formularioRegistro){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if(checkAuthority("ENFERMERO",authentication)){
+                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                if(paciente == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "el paciente no existe"), HttpStatus.NOT_FOUND);
+                }else if(enfermero == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }else {
+                    if(formularioRegistro.checkForNullOrEmpty()){
+                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
+                    }else{
+                        RegistroEnfermeria registroEnfermeria = new RegistroEnfermeria(
+                                LocalDateTime.now(),
+                                formularioRegistro.getTension_arterial(),
+                                formularioRegistro.getFrecuencia_cardiaca(),
+                                formularioRegistro.getFrecuencia_respiratoria(),
+                                formularioRegistro.getTemperatura(),
+                                formularioRegistro.getObservaciones(),
+                                enfermero,
+                                paciente
+                        );
+                        registroEnfermeriaRepository.save(registroEnfermeria);
+                        dto.put("status", "success");
+                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    }
+                }
+            }else{
+                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
+
     @PatchMapping("/pacientes/{pacienteId}/registros/{registroId}")
     public ResponseEntity<Map<String,Object>> updateRegistroEnfermeria(@PathVariable long pacienteId, @PathVariable long registroId, @RequestBody FormularioRegistro formularioRegistro){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -442,6 +565,53 @@ public class AppController {
         }
         return responseEntity;
     }
+
+    /*==================================
+    ====================================
+      APIs Contactos (POST, PATCH)
+    ===================================
+    =================================*/
+
+    @PostMapping("/pacientes/{pacienteId}/contactos")
+    public ResponseEntity<Map<String,Object>> addContacto(@PathVariable long pacienteId, @RequestBody FormularioContacto formularioContacto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if(checkAuthority("ENFERMERO",authentication) || checkAuthority("MEDICO",authentication)){
+                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+                if(paciente == null){
+                    responseEntity = new ResponseEntity<>(makeMap("error", "el paciente no existe"), HttpStatus.NOT_FOUND);
+                }else {
+                    if(formularioContacto.checkForNullOrEmpty()){
+                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
+                    }else{
+                        ContactoEmergencia contactoEmergencia = new ContactoEmergencia(
+                                formularioContacto.getNombreEmergencia(),
+                                formularioContacto.getApellidoEmergencia(),
+                                formularioContacto.getEmailEmergencia(),
+                                formularioContacto.getTelefonoEmergencia(),
+                                formularioContacto.getTelefono2Emergencia(),
+                                formularioContacto.getRelacion(),
+                                formularioContacto.getDireccionEmergencia(),
+                                paciente
+                        );
+                        contactoEmergenciaRepository.save(contactoEmergencia);
+                        dto.put("status", "success");
+                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
+                    }
+                }
+            }else{
+                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
+
 
     @PatchMapping("/api/pacientes/{pacienteId}/contactos/{contactoId}")
     public ResponseEntity<Map<String,Object>> updateContacto(@PathVariable long pacienteId, @PathVariable long contactoId, @RequestBody FormularioContacto formularioContacto){
@@ -500,132 +670,11 @@ public class AppController {
         return responseEntity;
     }
 
-
-    @GetMapping("/pacientes/{pacienteId}/registros")
-    public ResponseEntity<Map<String,Object>> getRegistros(@PathVariable Long pacienteId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ResponseEntity<Map<String,Object>> responseEntity;
-        Map<String, Object> dto = new LinkedHashMap<>();
-        if(isGuest(authentication)){
-            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-        }else{
-            dto.put("status", "authorized");
-            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
-            dto.put("user", authentication.getName());
-            if (checkAuthority("ENFERMERO", authentication)) {
-                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).get();
-                Optional<Paciente> paciente = pacienteRepository.findById(pacienteId);
-                if(!paciente.isPresent()){
-                    responseEntity = new ResponseEntity<>(makeMap("error","paciente no encontrado"),HttpStatus.NOT_FOUND);
-                }else if(!enfermero.getPacientes().contains(paciente.get())){
-                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
-                } else{
-                    dto.put("paciente",paciente.get().PacienteDTO());
-                    dto.put("registros",paciente.get().getRegistros()); //falta DTO
-                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
-                }
-            } else if (checkAuthority("MEDICO", authentication)) {
-                Medico medico = medicoRepository.findByEmail(authentication.getName()).get();
-                Optional<Paciente> paciente = pacienteRepository.findById(pacienteId);
-                if(!paciente.isPresent()){
-                    responseEntity = new ResponseEntity<>(makeMap("error","paciente no encontrado"),HttpStatus.NOT_FOUND);
-                }else if(!medico.getPacientes().contains(paciente.get())){
-                    responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
-                } else{
-                    dto.put("paciente",paciente.get().PacienteDTO());
-                    dto.put("registros",paciente.get().getRegistros().stream().map(RegistroEnfermeria::makeRegistroEnfermeriaDTO));
-                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
-                }
-            }
-            else{
-                responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
-            }
-        }
-        return responseEntity;
-    }
-
-    @PostMapping("/pacientes/{pacienteId}/registros")
-    public ResponseEntity<Map<String,Object>> addRegistro(@PathVariable long pacienteId, @RequestBody FormularioRegistro formularioRegistro){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ResponseEntity<Map<String,Object>> responseEntity;
-        Map<String, Object> dto = new LinkedHashMap<>();
-        if(isGuest(authentication)){
-            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-        }else{
-            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
-            dto.put("user", authentication.getName());
-            if(checkAuthority("ENFERMERO",authentication)){
-                Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
-                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
-                if(paciente == null){
-                    responseEntity = new ResponseEntity<>(makeMap("error", "el paciente no existe"), HttpStatus.NOT_FOUND);
-                }else if(enfermero == null){
-                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-                }else {
-                    if(formularioRegistro.checkForNullOrEmpty()){
-                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
-                    }else{
-                        RegistroEnfermeria registroEnfermeria = new RegistroEnfermeria(
-                                LocalDateTime.now(),
-                                formularioRegistro.getTension_arterial(),
-                                formularioRegistro.getFrecuencia_cardiaca(),
-                                formularioRegistro.getFrecuencia_respiratoria(),
-                                formularioRegistro.getTemperatura(),
-                                formularioRegistro.getObservaciones(),
-                                enfermero,
-                                paciente
-                        );
-                        registroEnfermeriaRepository.save(registroEnfermeria);
-                        dto.put("status", "success");
-                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
-                    }
-                }
-            }else{
-                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-            }
-        }
-        return responseEntity;
-    }
-
-    @PostMapping("/pacientes/{pacienteId}/contactos")
-    public ResponseEntity<Map<String,Object>> addContacto(@PathVariable long pacienteId, @RequestBody FormularioContacto formularioContacto){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ResponseEntity<Map<String,Object>> responseEntity;
-        Map<String, Object> dto = new LinkedHashMap<>();
-        if(isGuest(authentication)){
-            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-        }else{
-            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
-            dto.put("user", authentication.getName());
-            if(checkAuthority("ENFERMERO",authentication) || checkAuthority("MEDICO",authentication)){
-                Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
-                if(paciente == null){
-                    responseEntity = new ResponseEntity<>(makeMap("error", "el paciente no existe"), HttpStatus.NOT_FOUND);
-                }else {
-                    if(formularioContacto.checkForNullOrEmpty()){
-                        responseEntity = new ResponseEntity<>(makeMap("error", "hay campos vacíos o nulos"), HttpStatus.FORBIDDEN);
-                    }else{
-                        ContactoEmergencia contactoEmergencia = new ContactoEmergencia(
-                                formularioContacto.getNombreEmergencia(),
-                                formularioContacto.getApellidoEmergencia(),
-                                formularioContacto.getEmailEmergencia(),
-                                formularioContacto.getTelefonoEmergencia(),
-                                formularioContacto.getTelefono2Emergencia(),
-                                formularioContacto.getRelacion(),
-                                formularioContacto.getDireccionEmergencia(),
-                                paciente
-                        );
-                        contactoEmergenciaRepository.save(contactoEmergencia);
-                        dto.put("status", "success");
-                        responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);
-                    }
-                }
-            }else{
-                responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-            }
-        }
-        return responseEntity;
-    }
+    /*==================================
+    ====================================
+      APIs info repos (GET)
+    ===================================
+    =================================*/
 
     @GetMapping("/all/pacientes")
     public ResponseEntity<Map<String,Object>> getAllPacientes(){
@@ -692,6 +741,12 @@ public class AppController {
         return responseEntity;
     }
 
+    /*==================================
+    ====================================
+      APIs data (GET)
+    ===================================
+    =================================*/
+
     @GetMapping("/data/pacientes")
     public ResponseEntity<Map<String,Object>> getPacientesForData(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -712,6 +767,12 @@ public class AppController {
         }
         return responseEntity;
     }
+
+    /*==================================
+    ====================================
+          Métodos secundarios
+    ===================================
+    =================================*/
 
     private Map<String, Object> makeMap(String key, Object value) {
         Map<String, Object> map = new HashMap<>();
