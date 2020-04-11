@@ -6,26 +6,24 @@ import java.util.List;
 
 public class FormularioHC {
     private String motivo_consulta;
-    private String diagnostico;
+    private PCR diagnostico;
     private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
-    private PCR pcr;
     private float globulos_blancos;
     private float globulos_rojos;
     private float plaquetas;
     private float eritrosedimentacion;
     private List<FormularioMedicamento> medicamentos;
 
-    public FormularioHC(String motivo_consulta,String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, float globulos_blancos, float globulos_rojos, float plaquetas, float eritrosedimentacion, List<FormularioMedicamento> medicamentos) {
+    public FormularioHC(String motivo_consulta, PCR diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, float globulos_blancos, float globulos_rojos, float plaquetas, float eritrosedimentacion, List<FormularioMedicamento> medicamentos) {
         this.motivo_consulta = motivo_consulta;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
         this.sintomas = sintomas;
         this.tratamiento = tratamiento;
         this.observaciones = observaciones;
-        this.pcr = pcr;
         this.globulos_blancos = globulos_blancos;
         this.globulos_rojos = globulos_rojos;
         this.plaquetas = plaquetas;
@@ -41,11 +39,11 @@ public class FormularioHC {
         this.motivo_consulta = motivo_consulta;
     }
 
-    public String getDiagnostico() {
+    public PCR getDiagnostico() {
         return diagnostico;
     }
 
-    public void setDiagnostico(String diagnostico) {
+    public void setDiagnostico(PCR diagnostico) {
         this.diagnostico = diagnostico;
     }
 
@@ -79,14 +77,6 @@ public class FormularioHC {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
-    }
-
-    public PCR getPcr() {
-        return pcr;
-    }
-
-    public void setPcr(PCR pcr) {
-        this.pcr = pcr;
     }
 
     public float getGlobulos_blancos() {
@@ -133,13 +123,11 @@ public class FormularioHC {
         return this.getMotivo_consulta() == null ||
                 this.getMotivo_consulta().isEmpty() ||
                 this.getDiagnostico() == null ||
-                this.getDiagnostico().isEmpty() ||
                 this.getTemperatura() == 0 ||
                 this.getSintomas() == null ||
                 this.getSintomas().isEmpty() ||
                 this.getTratamiento() == null ||
-                this.getTratamiento().isEmpty() ||
-                this.getPcr() == null;
+                this.getTratamiento().isEmpty();
     }
 
     public boolean checkNullHemograma(){

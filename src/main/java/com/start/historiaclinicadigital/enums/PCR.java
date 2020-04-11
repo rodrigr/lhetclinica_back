@@ -1,5 +1,5 @@
 package com.start.historiaclinicadigital.enums;
 
 public enum PCR {
-    SOLICITADO, NO_SOLICITADO, POSITIVO, NEGATIVO
+    PCR_SOLICITADO, PCR_NO_SOLICITADO, PCR_POSITIVO, PCR_NEGATIVO, ALTA
 }

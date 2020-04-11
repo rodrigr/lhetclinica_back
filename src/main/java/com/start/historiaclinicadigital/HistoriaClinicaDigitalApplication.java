@@ -62,8 +62,8 @@ public class HistoriaClinicaDigitalApplication {
 			ContactoEmergencia contactoEmergencia5 = new ContactoEmergencia("Marisa","Quintas",",arisa.q_fe@hotmail.com","11-4678-2019","5478-8891","Cónyugue","Av. Chiclana 3200",paciente5);
 
 			//HCs
-			HistoriaClinica historiaClinica1 = new HistoriaClinica(LocalDateTime.parse("2020-03-15T15:00:35"),"","Cancer de pulmón",36.6,"Dificultad respiratoria, sangrado de nariz", "Reposo, respirador artificial, lavaje profundo","Se le hacen pruebas de respiracion profunda", PCR.NEGATIVO,medico5,paciente1);
-			HistoriaClinica historiaClinica2 = new HistoriaClinica(LocalDateTime.parse("2020-03-21T18:30:56"),"","Covid-19",40.0,"Fiebre, tos, dificultad respiratoria", "Reposo, respirador artificial, consumo de infusiones","Presenta una leve baja de fiebre",PCR.POSITIVO,medico2,paciente2);
+			HistoriaClinica historiaClinica1 = new HistoriaClinica(LocalDateTime.parse("2020-03-15T15:00:35"),"", PCR.PCR_NEGATIVO,36.6,"Dificultad respiratoria, sangrado de nariz", "Reposo, respirador artificial, lavaje profundo","Se le hacen pruebas de respiracion profunda", medico5,paciente1);
+			HistoriaClinica historiaClinica2 = new HistoriaClinica(LocalDateTime.parse("2020-03-21T18:30:56"),"",PCR.PCR_POSITIVO,40.0,"Fiebre, tos, dificultad respiratoria", "Reposo, respirador artificial, consumo de infusiones","Presenta una leve baja de fiebre", medico2,paciente2);
 
 
 			//Anamnesis

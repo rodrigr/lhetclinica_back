@@ -296,7 +296,6 @@ public class AppController {
                                 formularioHC.getSintomas(),
                                 formularioHC.getTratamiento(),
                                 formularioHC.getObservaciones(),
-                                formularioHC.getPcr(),
                                 medico,
                                 paciente
                         );
@@ -365,7 +364,7 @@ public class AppController {
                 }else if(medico.getHistoriasClinicas().stream().noneMatch(hc -> hc.getId() == hcId)){
                     responseEntity = new ResponseEntity<>(makeMap("error", "no tiene permisos para modificar la historia clínica"), HttpStatus.FORBIDDEN);
                 } else{
-                    if(formularioHC.getDiagnostico() != null && !formularioHC.getDiagnostico().isEmpty()){
+                    if(formularioHC.getDiagnostico() != null){
                         historiaClinica.setDiagnostico(formularioHC.getDiagnostico());
                     }
                     if(formularioHC.getTemperatura() != 0){

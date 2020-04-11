@@ -16,13 +16,12 @@ public class HistoriaClinica {
 
     private LocalDateTime fecha_hora;
     private String motivo_consulta;
-    private String diagnostico;
+    @Enumerated(EnumType.STRING)
+    private PCR diagnostico;
     private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
-    @Enumerated(EnumType.STRING)
-    private PCR pcr;
     @OneToMany(mappedBy = "historiaClinica", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Medicamento> medicamentos = new HashSet<>();
     @OneToOne(mappedBy = "historiaClinica")
@@ -44,7 +43,7 @@ public class HistoriaClinica {
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(LocalDateTime fecha_hora,String motivo_consulta, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, Medico medico, Paciente paciente) {
+    public HistoriaClinica(LocalDateTime fecha_hora, String motivo_consulta, PCR diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, Medico medico, Paciente paciente) {
         this.fecha_hora = fecha_hora;
         this.motivo_consulta = motivo_consulta;
         this.diagnostico = diagnostico;
@@ -54,7 +53,6 @@ public class HistoriaClinica {
         this.observaciones = observaciones;
         this.medico = medico;
         this.paciente = paciente;
-        this.pcr = pcr;
     }
 
     public LocalDateTime getFecha_hora() {
@@ -73,11 +71,11 @@ public class HistoriaClinica {
         this.motivo_consulta = motivo_consulta;
     }
 
-    public String getDiagnostico() {
+    public PCR getDiagnostico() {
         return diagnostico;
     }
 
-    public void setDiagnostico(String diagnostico) {
+    public void setDiagnostico(PCR diagnostico) {
         this.diagnostico = diagnostico;
     }
 
@@ -142,14 +140,6 @@ public class HistoriaClinica {
         return id;
     }
 
-    public PCR getPcr() {
-        return pcr;
-    }
-
-    public void setPcr(PCR pcr) {
-        this.pcr = pcr;
-    }
-
     public Hemograma getHemograma() {
         return hemograma;
     }
@@ -178,7 +168,6 @@ public class HistoriaClinica {
         dto.put("tratamiento",this.getTratamiento());
         dto.put("observaciones",this.getObservaciones());
         dto.put("medicamentos", this.getMedicamentos() != null ? this.getMedicamentos().stream().map(Medicamento::medicamentoDTO) : null);
-        dto.put("pcr",this.getPcr());
         dto.put("hemograma", this.getHemograma() != null ? this.getHemograma().hemogramaDTO() : null);
         dto.put("eritrosedimentacion", this.getEritrosedimentacion() != null ? this.getEritrosedimentacion().getValor() : null);
         return dto;
