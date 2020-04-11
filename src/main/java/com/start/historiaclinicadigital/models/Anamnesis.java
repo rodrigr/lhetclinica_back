@@ -28,6 +28,7 @@ public class Anamnesis {
     @Enumerated(EnumType.STRING)
     private List<CondicionPreexistente> condiciones_preexistentes;
     private String medicacion_regular;
+    private boolean vacuna_antigripal;
     private String trabajo;
     private int convivientes;
     private String observaciones;
@@ -39,7 +40,7 @@ public class Anamnesis {
     public Anamnesis() {
     }
 
-    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, Paciente paciente) {
+    public Anamnesis(boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, boolean vacuna_antigripal, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, Paciente paciente) {
         this.viaje = viaje;
         this.fecha_viaje = fecha_viaje;
         this.destino_viaje = destino_viaje;
@@ -48,6 +49,7 @@ public class Anamnesis {
         this.embarazos_previos = embarazos_previos;
         this.condiciones_preexistentes = condiciones_preexistentes;
         this.medicacion_regular = medicacion_regular;
+        this.vacuna_antigripal = vacuna_antigripal;
         this.trabajo = trabajo;
         this.convivientes = convivientes;
         this.observaciones = observaciones;
@@ -181,6 +183,14 @@ public class Anamnesis {
         this.nombre_obra_social = nombre_obra_social;
     }
 
+    public boolean isVacuna_antigripal() {
+        return vacuna_antigripal;
+    }
+
+    public void setVacuna_antigripal(boolean vacuna_antigripal) {
+        this.vacuna_antigripal = vacuna_antigripal;
+    }
+
     //DTO
     public Map<String,Object> AnamnesisDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -193,6 +203,7 @@ public class Anamnesis {
         dto.put("embarazosPrevios",this.getEmbarazos_previos());
         dto.put("condicionesPreexistentes",this.getCondiciones_preexistentes());
         dto.put("medicacionRegular",this.getMedicacion_regular());
+        dto.put("vacunaAntigripal", this.isVacuna_antigripal());
         dto.put("convivientes",this.getConvivientes());
         dto.put("obraSocial", this.isObra_social());
         dto.put("nombreObraSocial", this.getNombre_obra_social());

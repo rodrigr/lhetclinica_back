@@ -52,11 +52,12 @@ public abstract class Persona {
         this.email = email;
     }
 
-    public Persona(String nombre, String apellido, String email, String telefono) {
+    public Persona(String nombre, String apellido, String email, String telefono, int documento) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
+        this.documento = documento;
     }
 
     public long getId() {

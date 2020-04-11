@@ -1,6 +1,8 @@
 package com.start.historiaclinicadigital.models;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Entity
 public class Medicamento {
@@ -62,5 +64,12 @@ public class Medicamento {
 
     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
         this.historiaClinica = historiaClinica;
+    }
+
+    public Map<String,Object> medicamentoDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("nombre",this.getNombre());
+        dto.put("dosis", this.getDosis());
+        return dto;
     }
 }

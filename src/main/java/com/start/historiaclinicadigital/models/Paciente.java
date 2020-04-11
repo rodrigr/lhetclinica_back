@@ -15,7 +15,6 @@ public class Paciente extends Persona {
     private String direccion;
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    private String telefono;
 
     @OneToOne(mappedBy = "paciente")
     private Anamnesis anamnesis;
@@ -29,7 +28,7 @@ public class Paciente extends Persona {
     public Paciente(){};
 
     public Paciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, Sexo sexo, String telefono) {
-        super(nombre, apellido, email, documento, telefono);
+        super(nombre, apellido, email, telefono,documento);
         this.fecha_nacimiento = fecha_nacimiento;
         this.direccion = direccion;
         this.sexo = sexo;
@@ -57,14 +56,6 @@ public class Paciente extends Persona {
 
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
     }
 
     public Set<ContactoEmergencia> getContactoEmergencia() {

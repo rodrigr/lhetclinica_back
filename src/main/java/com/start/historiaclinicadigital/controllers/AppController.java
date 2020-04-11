@@ -145,6 +145,7 @@ public class AppController {
                             formularioPaciente.getEmbarazos_previos(),
                             formularioPaciente.getCondiciones_preexistentes(),
                             formularioPaciente.getMedicacion_regular(),
+                            formularioPaciente.isVacuna_antigripal(),
                             formularioPaciente.getTrabajo(),
                             formularioPaciente.getConvivientes(),
                             formularioPaciente.getObservaciones(),
@@ -305,8 +306,11 @@ public class AppController {
                                         if(!m.checkForNullOrEmpty()){
                                             Medicamento medicamento = new Medicamento(m.getNombre(),m.getDosis(),historiaClinica);
                                             historiaClinica.addMedicamento(medicamento);
+                                            dto.put(medicamento.getNombre(),"success");
                                         }
                                     });
+                        }else{
+                            dto.put("medicamentos",null);
                         }
 
                         historiaClinicaRepository.save(historiaClinica);
@@ -314,10 +318,16 @@ public class AppController {
                         if(!formularioHC.checkNullHemograma()){
                             Hemograma hemograma = new Hemograma(formularioHC.getGlobulos_blancos(),formularioHC.getGlobulos_rojos(),formularioHC.getPlaquetas(),historiaClinica);
                             hemogramaRepository.save(hemograma);
+                            dto.put("hemograma", "success");
+                        }else{
+                            dto.put("hemograma", null);
                         }
                         if(!formularioHC.checkNullEritrosedimentacion()){
                             Eritrosedimentacion eritrosedimentacion = new Eritrosedimentacion(formularioHC.getEritrosedimentacion(),historiaClinica);
                             eritrosedimentacionRepository.save(eritrosedimentacion);
+                            dto.put("eritrosedimentacion","success");
+                        }else{
+                            dto.put("eritrosedimentacion",null);
                         }
                         dto.put("status", "success");
                         responseEntity = new ResponseEntity<>(dto, HttpStatus.CREATED);

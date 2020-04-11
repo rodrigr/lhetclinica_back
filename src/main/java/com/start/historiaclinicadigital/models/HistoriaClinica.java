@@ -177,6 +177,7 @@ public class HistoriaClinica {
         dto.put("sintomas",this.getSintomas());
         dto.put("tratamiento",this.getTratamiento());
         dto.put("observaciones",this.getObservaciones());
+        dto.put("medicamentos", this.getMedicamentos() != null ? this.getMedicamentos().stream().map(Medicamento::medicamentoDTO) : null);
         dto.put("pcr",this.getPcr());
         dto.put("hemograma", this.getHemograma() != null ? this.getHemograma().hemogramaDTO() : null);
         dto.put("eritrosedimentacion", this.getEritrosedimentacion() != null ? this.getEritrosedimentacion().getValor() : null);

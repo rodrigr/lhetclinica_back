@@ -27,6 +27,7 @@ public class FormularioPaciente {
     private int embarazos_previos;
     private List<CondicionPreexistente> condiciones_preexistentes;
     private String medicacion_regular;
+    private boolean vacuna_antigripal;
     private String trabajo;
     private int convivientes;
     private String observaciones;
@@ -43,7 +44,7 @@ public class FormularioPaciente {
     private String relacion;
     private String direccionEmergencia;
 
-    public FormularioPaciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, Sexo sexo, String telefono, boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, String nombreEmergencia, String apellidoEmergencia, String emailEmergencia, String telefonoEmergencia, String telefono2Emergencia, String relacion, String direccionEmergencia) {
+    public FormularioPaciente(String nombre, String apellido, String email, int documento, LocalDate fecha_nacimiento, String direccion, Sexo sexo, String telefono, boolean viaje, LocalDate fecha_viaje, String destino_viaje, boolean embarazo, int semanas_gestacion, int embarazos_previos, List<CondicionPreexistente> condiciones_preexistentes, String medicacion_regular, boolean vacuna_antigripal, String trabajo, int convivientes, String observaciones, boolean obra_social, String nombre_obra_social, GrupoSanguineo grupo_sanguineo, String nombreEmergencia, String apellidoEmergencia, String emailEmergencia, String telefonoEmergencia, String telefono2Emergencia, String relacion, String direccionEmergencia) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -60,6 +61,7 @@ public class FormularioPaciente {
         this.embarazos_previos = embarazos_previos;
         this.condiciones_preexistentes = condiciones_preexistentes;
         this.medicacion_regular = medicacion_regular;
+        this.vacuna_antigripal = vacuna_antigripal;
         this.trabajo = trabajo;
         this.convivientes = convivientes;
         this.observaciones = observaciones;
@@ -307,6 +309,14 @@ public class FormularioPaciente {
         this.direccionEmergencia = direccionEmergencia;
     }
 
+    public boolean isVacuna_antigripal() {
+        return vacuna_antigripal;
+    }
+
+    public void setVacuna_antigripal(boolean vacuna_antigripal) {
+        this.vacuna_antigripal = vacuna_antigripal;
+    }
+
     public boolean checkForNullOrEmpty(){
         return this.getNombre() == null || this.getNombre().isEmpty() ||
                 this.getApellido() == null || this.getApellido().isEmpty() ||
@@ -315,7 +325,6 @@ public class FormularioPaciente {
                 this.getDireccion() == null || this.getDireccion().isEmpty() ||
                 this.getSexo() == null ||
                 this.getTelefono() == null || this.getTelefono().isEmpty() ||
-                this.getCondiciones_preexistentes() == null || this.getCondiciones_preexistentes().isEmpty() ||
                 this.getTrabajo() == null || this.getTrabajo().isEmpty() ||
                 this.getGrupo_sanguineo() == null;
     }

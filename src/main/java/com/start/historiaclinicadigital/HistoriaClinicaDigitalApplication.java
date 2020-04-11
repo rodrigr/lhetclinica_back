@@ -67,7 +67,7 @@ public class HistoriaClinicaDigitalApplication {
 
 
 			//Anamnesis
-			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0, Arrays.asList(CondicionPreexistente.ASMA),"","",2,"",true,"", GrupoSanguineo.A_NEGATIVO,paciente1);
+			Anamnesis anamnesis1 = new Anamnesis(false,null,null,false,0,0, Arrays.asList(CondicionPreexistente.ASMA),"" ,false,"",2,"",true,"", GrupoSanguineo.A_NEGATIVO,paciente1);
 
 			//Repo Meds
 			medicoRepository.save(medico1);
