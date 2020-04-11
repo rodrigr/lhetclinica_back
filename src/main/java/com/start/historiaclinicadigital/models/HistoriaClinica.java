@@ -15,11 +15,13 @@ public class HistoriaClinica {
     long id;
 
     private LocalDateTime fecha_hora;
+    private String motivo_consulta;
     private String diagnostico;
     private double temperatura;
     private String sintomas;
     private String tratamiento;
     private String observaciones;
+    @Enumerated(EnumType.STRING)
     private PCR pcr;
     @OneToMany(mappedBy = "historiaClinica", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Medicamento> medicamentos = new HashSet<>();
@@ -42,8 +44,9 @@ public class HistoriaClinica {
     public HistoriaClinica() {
     }
 
-    public HistoriaClinica(LocalDateTime fecha_hora, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, Medico medico, Paciente paciente) {
+    public HistoriaClinica(LocalDateTime fecha_hora,String motivo_consulta, String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, Medico medico, Paciente paciente) {
         this.fecha_hora = fecha_hora;
+        this.motivo_consulta = motivo_consulta;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
         this.sintomas = sintomas;
@@ -60,6 +63,14 @@ public class HistoriaClinica {
 
     public void setFecha_hora(LocalDateTime fecha_hora) {
         this.fecha_hora = fecha_hora;
+    }
+
+    public String getMotivo_consulta() {
+        return motivo_consulta;
+    }
+
+    public void setMotivo_consulta(String motivo_consulta) {
+        this.motivo_consulta = motivo_consulta;
     }
 
     public String getDiagnostico() {
@@ -160,6 +171,7 @@ public class HistoriaClinica {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.getId());
         dto.put("fechaHora",this.getFecha_hora());
+        dto.put("motivoConsulta", this.getMotivo_consulta());
         dto.put("diagnostico",this.getDiagnostico());
         dto.put("temperatura",this.getTemperatura());
         dto.put("sintomas",this.getSintomas());

@@ -289,6 +289,7 @@ public class AppController {
                     } else {
                         HistoriaClinica historiaClinica = new HistoriaClinica(
                                 LocalDateTime.now(),
+                                formularioHC.getMotivo_consulta(),
                                 formularioHC.getDiagnostico(),
                                 formularioHC.getTemperatura(),
                                 formularioHC.getSintomas(),
@@ -298,6 +299,15 @@ public class AppController {
                                 medico,
                                 paciente
                         );
+
+                        if(!formularioHC.checkNullMedicamentos()){
+                            formularioHC.getMedicamentos().forEach(m -> {
+                                        if(!m.checkForNullOrEmpty()){
+                                            Medicamento medicamento = new Medicamento(m.getNombre(),m.getDosis(),historiaClinica);
+                                            historiaClinica.addMedicamento(medicamento);
+                                        }
+                                    });
+                        }
 
                         historiaClinicaRepository.save(historiaClinica);
 

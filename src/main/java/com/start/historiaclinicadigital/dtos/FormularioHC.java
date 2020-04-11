@@ -2,7 +2,10 @@ package com.start.historiaclinicadigital.dtos;
 
 import com.start.historiaclinicadigital.enums.PCR;
 
+import java.util.List;
+
 public class FormularioHC {
+    private String motivo_consulta;
     private String diagnostico;
     private double temperatura;
     private String sintomas;
@@ -13,8 +16,10 @@ public class FormularioHC {
     private float globulos_rojos;
     private float plaquetas;
     private float eritrosedimentacion;
+    private List<FormularioMedicamento> medicamentos;
 
-    public FormularioHC(String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, float globulos_blancos, float globulos_rojos, float plaquetas, float eritrosedimentacion) {
+    public FormularioHC(String motivo_consulta,String diagnostico, double temperatura, String sintomas, String tratamiento, String observaciones, PCR pcr, float globulos_blancos, float globulos_rojos, float plaquetas, float eritrosedimentacion, List<FormularioMedicamento> medicamentos) {
+        this.motivo_consulta = motivo_consulta;
         this.diagnostico = diagnostico;
         this.temperatura = temperatura;
         this.sintomas = sintomas;
@@ -25,6 +30,15 @@ public class FormularioHC {
         this.globulos_rojos = globulos_rojos;
         this.plaquetas = plaquetas;
         this.eritrosedimentacion = eritrosedimentacion;
+        this.medicamentos = medicamentos;
+    }
+
+    public String getMotivo_consulta() {
+        return motivo_consulta;
+    }
+
+    public void setMotivo_consulta(String motivo_consulta) {
+        this.motivo_consulta = motivo_consulta;
     }
 
     public String getDiagnostico() {
@@ -107,8 +121,18 @@ public class FormularioHC {
         this.eritrosedimentacion = eritrosedimentacion;
     }
 
+    public List<FormularioMedicamento> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void setMedicamentos(List<FormularioMedicamento> medicamentos) {
+        this.medicamentos = medicamentos;
+    }
+
     public boolean checkForNullOrEmpty(){
-        return this.getDiagnostico() == null ||
+        return this.getMotivo_consulta() == null ||
+                this.getMotivo_consulta().isEmpty() ||
+                this.getDiagnostico() == null ||
                 this.getDiagnostico().isEmpty() ||
                 this.getTemperatura() == 0 ||
                 this.getSintomas() == null ||
@@ -126,5 +150,9 @@ public class FormularioHC {
 
     public  boolean checkNullEritrosedimentacion(){
         return this.getEritrosedimentacion() == 0;
+    }
+
+    public boolean checkNullMedicamentos(){
+        return this.getMedicamentos() == null || this.getMedicamentos().size() == 0;
     }
 }

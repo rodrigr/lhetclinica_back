@@ -22,9 +22,10 @@ public class Medicamento {
 
     public Medicamento(){}
 
-    public Medicamento(String nombre, String dosis) {
+    public Medicamento(String nombre, String dosis,HistoriaClinica historiaClinica) {
         this.nombre = nombre;
         this.dosis = dosis;
+        this.historiaClinica = historiaClinica;
     }
 
     public long getId() {

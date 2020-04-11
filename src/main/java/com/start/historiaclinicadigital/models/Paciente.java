@@ -13,6 +13,7 @@ public class Paciente extends Persona {
 
     private LocalDate fecha_nacimiento;
     private String direccion;
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
     private String telefono;
 

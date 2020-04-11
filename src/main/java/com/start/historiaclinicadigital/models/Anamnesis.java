@@ -25,6 +25,7 @@ public class Anamnesis {
     private int semanas_gestacion;
     private int embarazos_previos;
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<CondicionPreexistente> condiciones_preexistentes;
     private String medicacion_regular;
     private String trabajo;
@@ -32,6 +33,7 @@ public class Anamnesis {
     private String observaciones;
     private boolean obra_social;
     private String nombre_obra_social;
+    @Enumerated(EnumType.STRING)
     private GrupoSanguineo grupo_sanguineo;
 
     public Anamnesis() {
