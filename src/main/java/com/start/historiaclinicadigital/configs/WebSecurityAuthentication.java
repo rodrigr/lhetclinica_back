@@ -37,10 +37,10 @@ public class WebSecurityAuthentication extends GlobalAuthenticationConfigurerAda
             Optional<Enfermero> enfermero = enfermeroRepository.findByEmail(email);
             Optional<Admin> admin = adminRepository.findByEmail(email);
             Optional<DataAnalyst> dataAnalyst = dataAnalystRepository.findByEmail(email);
-            if(medico.isPresent()){
+            if(medico.isPresent() && medico.get().isActivo()){
                 return new User(medico.get().getEmail(), medico.get().getPassword(),
                         AuthorityUtils.createAuthorityList("MEDICO"));
-            } else if(enfermero.isPresent()){
+            } else if(enfermero.isPresent() && enfermero.get().isActivo()){
                 return new User(enfermero.get().getEmail(), enfermero.get().getPassword(),
                         AuthorityUtils.createAuthorityList("ENFERMERO"));
             }

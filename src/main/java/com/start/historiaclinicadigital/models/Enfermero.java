@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 @Entity
 public class Enfermero extends Persona {
 
+    private boolean activo;
+
     @OneToMany(mappedBy = "enfermero",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<RegistroEnfermeria> registros = new HashSet<>();
 
@@ -18,6 +20,7 @@ public class Enfermero extends Persona {
 
     public Enfermero(String nombre, String apellido, String email, int documento, String password, String telefono) {
         super(nombre, apellido, email, documento, password,telefono);
+        this.activo = false;
     }
 
     public Set<RegistroEnfermeria> getRegistros() {
@@ -31,6 +34,14 @@ public class Enfermero extends Persona {
 
     public List<Paciente> getPacientes(){
         return this.registros.stream().map(RegistroEnfermeria::getPaciente).collect(Collectors.toList());
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public Map<String,Object> EnfermeroDTO(){

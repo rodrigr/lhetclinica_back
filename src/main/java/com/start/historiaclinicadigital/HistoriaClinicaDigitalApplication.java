@@ -30,7 +30,7 @@ public class HistoriaClinicaDigitalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(MedicoRepository medicoRepository, EnfermeroRepository enfermeroRepository, PacienteRepository pacienteRepository, HistoriaClinicaRepository historiaClinicaRepository, AnamnesisRepository anamnesisRepository, ContactoEmergenciaRepository contactoEmergenciaRepository, DataAnalystRepository dataAnalystRepository){
+	public CommandLineRunner initData(MedicoRepository medicoRepository, EnfermeroRepository enfermeroRepository, PacienteRepository pacienteRepository, HistoriaClinicaRepository historiaClinicaRepository, AnamnesisRepository anamnesisRepository, ContactoEmergenciaRepository contactoEmergenciaRepository, DataAnalystRepository dataAnalystRepository,AdminRepository adminRepository){
 		return args -> {
 			//Medicos
 			Medico medico1 = new Medico("Eduardo","Calleros","eduardo@hotmail.com",21888567,65024,passwordEncoder().encode("123qwe"),"15-8543-9911");
@@ -39,6 +39,11 @@ public class HistoriaClinicaDigitalApplication {
 			Medico medico4 = new Medico("Maia","González","mai_med@hotmail.com",26722001,73897,passwordEncoder().encode("123456"),"15-8543-9911");
 			Medico medico5 = new Medico("Raúl","Echeverría","raul.eche@gmail.com",15569240,39970,passwordEncoder().encode("Covid123"),"15-8543-9911");
 
+			medico1.setActivo(true);
+			medico2.setActivo(true);
+			medico3.setActivo(true);
+			medico4.setActivo(true);
+			medico5.setActivo(true);
 
 			//Enfermeros
 			Enfermero enfermero1 = new Enfermero("Jose","Encardo","jose.encardo1@gmail.com",33921355,passwordEncoder().encode("Sensei14"),"15-8543-9911");
@@ -46,6 +51,12 @@ public class HistoriaClinicaDigitalApplication {
 			Enfermero enfermero3 = new Enfermero("Gustavo","García","gustav_supernova@hotmail.com.com",29542833,passwordEncoder().encode("56asd1"),"15-8543-9911");
 			Enfermero enfermero4 = new Enfermero("Paula","Marquéz","paula.mar@gmail.com",20652310,passwordEncoder().encode("Enfer147"),"15-8543-9911");
 			Enfermero enfermero5 = new Enfermero("Patricia","López","patricia.lopez07@gmail.com",40512117,passwordEncoder().encode("12345678p"),"15-8543-9911");
+
+			enfermero1.setActivo(true);
+			enfermero2.setActivo(true);
+			enfermero3.setActivo(true);
+			enfermero4.setActivo(true);
+			enfermero5.setActivo(true);
 
 			//Pacientes
 			Paciente paciente1 = new Paciente("Juan","Rios","juan.rios@gmail.com",43997867, LocalDate.parse("2002-09-24"),"Av. De Mayo 2567", Sexo.M,"15-2098-1145");
@@ -107,6 +118,10 @@ public class HistoriaClinicaDigitalApplication {
 			//Data
 			DataAnalyst dataAnalyst1 = new DataAnalyst("Rodrigo", "Garcia Ribeiro", "rj.garcia.ribeiro@gmail.com", 37931982, passwordEncoder().encode("rodridata123"));
 			dataAnalystRepository.save(dataAnalyst1);
+
+			//Admin
+			Admin admin = new Admin("admin","admin","root",2940943,passwordEncoder().encode("root"));
+			adminRepository.save(admin);
 		};
 	}
 
