@@ -60,8 +60,8 @@ public class Medico extends Persona {
         dto.put("apellido",this.getApellido());
         dto.put("email",this.getEmail());
         dto.put("telefono",this.getTelefono());
+        dto.put("documento",this.getDocumento());
         dto.put("matricula",this.getMatricula());
-
         return dto;
     }
 }

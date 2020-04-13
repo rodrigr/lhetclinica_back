@@ -51,6 +51,7 @@ public class Enfermero extends Persona {
         dto.put("apellido",this.getApellido());
         dto.put("email",this.getEmail());
         dto.put("telefono",this.getTelefono());
+        dto.put("documento",this.getDocumento());
         return dto;
     }
 }

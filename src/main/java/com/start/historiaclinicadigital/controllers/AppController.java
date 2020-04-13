@@ -134,7 +134,7 @@ public class AppController {
     ===================================
     =================================*/
 
-    @GetMapping("alta/medicos")
+    @GetMapping("/alta/medicos")
     public ResponseEntity<Map<String,Object>> getMedicosAlta(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
@@ -153,7 +153,7 @@ public class AppController {
         return responseEntity;
     }
 
-    @GetMapping("alta/enfermeros")
+    @GetMapping("/alta/enfermeros")
     public ResponseEntity<Map<String,Object>> getEnfermerosAlta(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
@@ -172,7 +172,7 @@ public class AppController {
         return responseEntity;
     }
 
-    @PostMapping("alta/medicos/{medicoId}")
+    @PostMapping("/alta/medicos/{medicoId}")
     public ResponseEntity<Map<String,Object>> altaMedico(@PathVariable long medicoId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
@@ -198,7 +198,7 @@ public class AppController {
         return responseEntity;
     }
 
-    @PostMapping("alta/enfermeros/{enfermeroId}")
+    @PostMapping("/alta/enfermeros/{enfermeroId}")
     public ResponseEntity<Map<String,Object>> altaEnfermero(@PathVariable long enfermeroId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ResponseEntity<Map<String,Object>> responseEntity;
