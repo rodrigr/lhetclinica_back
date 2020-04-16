@@ -30,6 +30,8 @@ public class AppController {
     @Autowired
     PacienteRepository pacienteRepository;
     @Autowired
+    AdminRepository adminRepository;
+    @Autowired
     HistoriaClinicaRepository historiaClinicaRepository;
     @Autowired
     RegistroEnfermeriaRepository registroEnfermeriaRepository;
@@ -74,6 +76,14 @@ public class AppController {
                 Enfermero enfermero = enfermeroRepository.findByEmail(authentication.getName()).orElse(null);
                 if(enfermero != null){
                     dto.put("userData",enfermero.EnfermeroDTO());
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }else{
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }
+            }else if(checkAuthority("ADMIN", authentication)){
+                Admin admin = adminRepository.findByEmail(authentication.getName()).orElse(null);
+                if(admin != null){
+                    dto.put("userData",admin.adminDTO());
                     responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
                 }else{
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
