@@ -41,8 +41,7 @@ public class HistoriaClinicaDigitalApplication {
 
 			medico1.setActivo(true);
 			medico2.setActivo(true);
-			medico3.setActivo(true);
-			medico4.setActivo(true);
+			
 			medico5.setActivo(true);
 
 			//Enfermeros
