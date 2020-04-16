@@ -41,7 +41,7 @@ public class HistoriaClinicaDigitalApplication {
 
 			medico1.setActivo(true);
 			medico2.setActivo(true);
-			
+
 			medico5.setActivo(true);
 
 			//Enfermeros
@@ -53,9 +53,6 @@ public class HistoriaClinicaDigitalApplication {
 
 			enfermero1.setActivo(true);
 			enfermero2.setActivo(true);
-			enfermero3.setActivo(true);
-			enfermero4.setActivo(true);
-			enfermero5.setActivo(true);
 
 			//Pacientes
 			Paciente paciente1 = new Paciente("Juan","Rios","juan.rios@gmail.com",43997867, LocalDate.parse("2002-09-24"),"Av. De Mayo 2567", Sexo.M,"15-2098-1145");
