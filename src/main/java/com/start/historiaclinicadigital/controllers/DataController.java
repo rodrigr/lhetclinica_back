@@ -68,7 +68,7 @@ public class DataController {
         else
             dto.put("anamnesis",null);
         if(paciente.getHistoriaClinica().size() > 0){
-            List<Map<String,Object>> hcDTOs = paciente.getHistoriaClinica().stream().filter(hc ->  hc.getFecha_hora().toLocalDate().isAfter(startDate) &&  hc.getFecha_hora().toLocalDate().isBefore(endDate)).map(HistoriaClinica::makeHistoriaClinicaDTO).collect(toList());
+            List<Map<String,Object>> hcDTOs = paciente.getHistoriaClinica().stream().filter(hc ->  hc.getFecha_hora().toLocalDate().isAfter(startDate.minusDays(1)) &&  hc.getFecha_hora().toLocalDate().isBefore(endDate.plusDays(1))).map(HistoriaClinica::makeHistoriaClinicaDTO).collect(toList());
             if(hcDTOs.size() > 0){
                 dto.put("historiasClinicas", hcDTOs);
             }else{
