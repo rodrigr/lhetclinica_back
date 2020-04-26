@@ -1,13 +1,7 @@
 package com.start.historiaclinicadigital.configs;
 
-import com.start.historiaclinicadigital.models.Admin;
-import com.start.historiaclinicadigital.models.DataAnalyst;
-import com.start.historiaclinicadigital.models.Enfermero;
-import com.start.historiaclinicadigital.models.Medico;
-import com.start.historiaclinicadigital.repositories.AdminRepository;
-import com.start.historiaclinicadigital.repositories.DataAnalystRepository;
-import com.start.historiaclinicadigital.repositories.EnfermeroRepository;
-import com.start.historiaclinicadigital.repositories.MedicoRepository;
+import com.start.historiaclinicadigital.models.*;
+import com.start.historiaclinicadigital.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,6 +23,8 @@ public class WebSecurityAuthentication extends GlobalAuthenticationConfigurerAda
     AdminRepository adminRepository;
     @Autowired
     DataAnalystRepository dataAnalystRepository;
+    @Autowired
+    AdministrativoRepository administrativoRepository;
 
     @Override
     public void init (AuthenticationManagerBuilder auth) throws Exception{
@@ -36,6 +32,7 @@ public class WebSecurityAuthentication extends GlobalAuthenticationConfigurerAda
             Optional<Medico> medico = medicoRepository.findByEmail(email);
             Optional<Enfermero> enfermero = enfermeroRepository.findByEmail(email);
             Optional<Admin> admin = adminRepository.findByEmail(email);
+            Optional<Administrativo> administrativo = administrativoRepository.findByEmail(email);
             Optional<DataAnalyst> dataAnalyst = dataAnalystRepository.findByEmail(email);
             if(medico.isPresent() && medico.get().isActivo()){
                 return new User(medico.get().getEmail(), medico.get().getPassword(),
@@ -47,6 +44,10 @@ public class WebSecurityAuthentication extends GlobalAuthenticationConfigurerAda
             else if(admin.isPresent()){
                 return new User(admin.get().getEmail(), admin.get().getPassword(),
                         AuthorityUtils.createAuthorityList("ADMIN"));
+            }
+            else if(administrativo.isPresent()){
+                return new User(administrativo.get().getEmail(), administrativo.get().getPassword(),
+                        AuthorityUtils.createAuthorityList("ADMINISTRATIVO"));
             }
             else if(dataAnalyst.isPresent()){
                 return new User(dataAnalyst.get().getEmail(), dataAnalyst.get().getPassword(),

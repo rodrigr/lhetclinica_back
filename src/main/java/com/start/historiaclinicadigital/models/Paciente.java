@@ -193,7 +193,29 @@ public class Paciente extends Persona {
         return dto;
     }
 
+    public Map<String,Object> pacienteDTOforAdministrativos(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id",this.getId());
+        dto.put("nombre",this.getNombre());
+        dto.put("apellido",this.getApellido());
+        dto.put("documento",this.getDocumento());
+        dto.put("email",this.getEmail());
+        dto.put("sexo",this.getSexo());
+        dto.put("direccion",this.getDireccion());
+        dto.put("telefono",this.getTelefono());
+        if(this.getContactoEmergencia().size() > 0){
+            dto.put("contactosEmergencia",this.getContactoEmergencia()
+                    .stream()
+                    .map(ContactoEmergencia::ContactoEmergenciaDTO)
+                    .collect(Collectors.toList())
 
+            );
+        }else{
+            dto.put("contactosEmergencia",null);
+        }
+
+        return dto;
+    }
 
 
 }
