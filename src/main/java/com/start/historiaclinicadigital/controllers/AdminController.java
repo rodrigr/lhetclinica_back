@@ -1,6 +1,7 @@
 package com.start.historiaclinicadigital.controllers;
 
 import com.start.historiaclinicadigital.models.Administrativo;
+import com.start.historiaclinicadigital.models.DataAnalyst;
 import com.start.historiaclinicadigital.models.Enfermero;
 import com.start.historiaclinicadigital.models.Medico;
 import com.start.historiaclinicadigital.repositories.*;
@@ -28,6 +29,8 @@ public class AdminController {
     EnfermeroRepository enfermeroRepository;
     @Autowired
     AdministrativoRepository administrativoRepository;
+    @Autowired
+    DataAnalystRepository dataAnalystRepository;
 
     @GetMapping("/alta/medicos")
     public ResponseEntity<Map<String,Object>> getMedicosAlta(){
@@ -81,6 +84,25 @@ public class AdminController {
             dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
             dto.put("user", authentication.getName());
             dto.put("administrativos", administrativoRepository.findAll().stream().filter(administrativo -> !administrativo.isActivo()).map(Administrativo::administrativoDTO));
+            responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+        }
+        return responseEntity;
+    }
+
+    @GetMapping("/alta/datas")
+    public ResponseEntity<Map<String,Object>> getDatasAlta(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        } else if(!this.checkAuthority("ADMIN",authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "authorized");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            dto.put("datas", dataAnalystRepository.findAll().stream().filter(data -> !data.isActivo()).map(DataAnalyst::dataAnalystDTO));
             responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
         }
         return responseEntity;
@@ -166,6 +188,35 @@ public class AdminController {
             else{
                 administrativo.setActivo(true);
                 administrativoRepository.save(administrativo);
+                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+            }
+
+        }
+        return responseEntity;
+    }
+
+    @PatchMapping("/alta/datas/{dataId}")
+    public ResponseEntity<Map<String,Object>> altaData(@PathVariable long dataId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        } else if(!this.checkAuthority("ADMIN",authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "success");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            DataAnalyst dataAnalyst = dataAnalystRepository.findById(dataId).orElse(null);
+            if(dataAnalyst == null){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst no existe"), HttpStatus.NOT_FOUND);
+            }else if(dataAnalyst.isActivo()){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst ya está activo"), HttpStatus.CONFLICT);
+            }
+            else{
+                dataAnalyst.setActivo(true);
+                dataAnalystRepository.save(dataAnalyst);
                 responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
             }
 
@@ -259,6 +310,35 @@ public class AdminController {
         return responseEntity;
     }
 
+    @PatchMapping("/baja/datas/{dataId}")
+    public ResponseEntity<Map<String,Object>> bajaData(@PathVariable long dataId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        } else if(!this.checkAuthority("ADMIN",authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "success");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            DataAnalyst dataAnalyst = dataAnalystRepository.findById(dataId).orElse(null);
+            if(dataAnalyst == null){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst no existe"), HttpStatus.NOT_FOUND);
+            }else if(!dataAnalyst.isActivo()){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst no está activo"), HttpStatus.CONFLICT);
+            }
+            else{
+                dataAnalyst.setActivo(false);
+                dataAnalystRepository.save(dataAnalyst);
+                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+            }
+
+        }
+        return responseEntity;
+    }
+
     @DeleteMapping("/eliminar/medicos/{medicoId}")
     public ResponseEntity<Map<String,Object>> eliminarMedico(@PathVariable long medicoId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -337,6 +417,32 @@ public class AdminController {
         return responseEntity;
     }
 
+    @DeleteMapping("/eliminar/datas/{dataId}")
+    public ResponseEntity<Map<String,Object>> eliminarData(@PathVariable long dataId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        } else if(!this.checkAuthority("ADMIN",authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else {
+            dto.put("status", "success");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            DataAnalyst dataAnalyst = dataAnalystRepository.findById(dataId).orElse(null);
+            if(dataAnalyst == null){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst no existe"), HttpStatus.NOT_FOUND);
+            }else if(dataAnalyst.isActivo()){
+                responseEntity = new ResponseEntity<>(makeMap("error", "el data analyst está activo"), HttpStatus.FORBIDDEN);
+            } else{
+                dataAnalystRepository.delete(dataAnalyst);
+                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+            }
+        }
+        return responseEntity;
+    }
+
     @GetMapping("/activos/medicos")
     public ResponseEntity<Map<String,Object>> getAllMedicos(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -393,6 +499,27 @@ public class AdminController {
             dto.put("user", authentication.getName());
             if (checkAuthority("ADMIN", authentication) ) {
                 dto.put("administrativos",administrativoRepository.findAll().stream().filter(Administrativo::isActivo).map(Administrativo::administrativoDTO));
+                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+            }else{
+                responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
+
+    @GetMapping("/activos/datas")
+    public ResponseEntity<Map<String,Object>> getAllDatas(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<Map<String,Object>> responseEntity;
+        Map<String, Object> dto = new LinkedHashMap<>();
+        if(isGuest(authentication)){
+            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+        }else{
+            dto.put("status", "authorized");
+            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+            dto.put("user", authentication.getName());
+            if (checkAuthority("ADMIN", authentication) ) {
+                dto.put("administrativos",dataAnalystRepository.findAll().stream().filter(DataAnalyst::isActivo).map(DataAnalyst::dataAnalystDTO));
                 responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
             }else{
                 responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);

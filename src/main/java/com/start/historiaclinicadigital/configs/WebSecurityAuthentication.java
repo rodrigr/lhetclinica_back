@@ -45,11 +45,11 @@ public class WebSecurityAuthentication extends GlobalAuthenticationConfigurerAda
                 return new User(admin.get().getEmail(), admin.get().getPassword(),
                         AuthorityUtils.createAuthorityList("ADMIN"));
             }
-            else if(administrativo.isPresent()){
+            else if(administrativo.isPresent() && administrativo.get().isActivo()){
                 return new User(administrativo.get().getEmail(), administrativo.get().getPassword(),
                         AuthorityUtils.createAuthorityList("ADMINISTRATIVO"));
             }
-            else if(dataAnalyst.isPresent()){
+            else if(dataAnalyst.isPresent() && administrativo.get().isActivo()){
                 return new User(dataAnalyst.get().getEmail(), dataAnalyst.get().getPassword(),
                         AuthorityUtils.createAuthorityList("DATA_ANALYST"));
             } else{

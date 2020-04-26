@@ -113,6 +113,7 @@ public class HistoriaClinicaDigitalApplication {
 
 			//Data
 			DataAnalyst dataAnalyst1 = new DataAnalyst("Rodrigo", "Garcia Ribeiro", "rj.garcia.ribeiro@gmail.com", 37931982, passwordEncoder().encode("rodridata123"));
+			dataAnalyst1.setActivo(true);
 			dataAnalystRepository.save(dataAnalyst1);
 
 			//Admin

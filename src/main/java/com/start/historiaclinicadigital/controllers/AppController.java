@@ -34,6 +34,8 @@ public class AppController {
     @Autowired
     AdministrativoRepository administrativoRepository;
     @Autowired
+    DataAnalystRepository dataAnalystRepository;
+    @Autowired
     HistoriaClinicaRepository historiaClinicaRepository;
     @Autowired
     RegistroEnfermeriaRepository registroEnfermeriaRepository;
@@ -94,6 +96,14 @@ public class AppController {
                 Administrativo administrativo = administrativoRepository.findByEmail(authentication.getName()).orElse(null);
                 if(administrativo != null){
                     dto.put("userData",administrativo.administrativoDTO());
+                    responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
+                }else{
+                    responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
+                }
+            }else if(checkAuthority("DATA_ANALYST", authentication)){
+                DataAnalyst dataAnalyst = dataAnalystRepository.findByEmail(authentication.getName()).orElse(null);
+                if(dataAnalyst != null){
+                    dto.put("userData",dataAnalyst.dataAnalystDTO());
                     responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
                 }else{
                     responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
