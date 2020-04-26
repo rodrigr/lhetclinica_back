@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -790,34 +789,6 @@ public class AppController {
 
 
 
-    /*==================================
-    ====================================
-      APIs data (GET)
-    ===================================
-    =================================*/
-
-    @GetMapping("/data/pacientes")
-    public ResponseEntity<Map<String,Object>> getPacientesForData(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ResponseEntity<Map<String,Object>> responseEntity;
-        Map<String, Object> dto = new LinkedHashMap<>();
-        if(isGuest(authentication)){
-            responseEntity = new ResponseEntity<>(makeMap("error", "unauthorized"), HttpStatus.UNAUTHORIZED);
-        }else{
-            dto.put("status", "authorized");
-            dto.put("authorities", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority));
-            dto.put("user", authentication.getName());
-            if (checkAuthority("DATA_ANALYST", authentication) || checkAuthority("ADMIN", authentication)) {
-                dto.put("pacientes",pacienteRepository.findAll().stream().map(Paciente::pacienteDTOforData));
-                responseEntity = new ResponseEntity<>(dto,HttpStatus.OK);
-            }else{
-                responseEntity = new ResponseEntity<>(makeMap("error","unauthorized"),HttpStatus.UNAUTHORIZED);
-            }
-        }
-        return responseEntity;
-    }
-
-    //private Map<String,Object> findPacienteHCByDate(Paciente paciente, LocalDate startDate, LocalDate endDate)
 
     /*==================================
     ====================================

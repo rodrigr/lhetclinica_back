@@ -138,6 +138,7 @@ public class Paciente extends Persona {
         dto.put("nombre",this.getNombre());
         dto.put("apellido",this.getApellido());
         dto.put("documento",this.getDocumento());
+        dto.put("fechaNacimiento",this.getFecha_nacimiento());
         dto.put("email",this.getEmail());
         dto.put("sexo",this.getSexo());
         dto.put("direccion",this.getDireccion());
@@ -176,29 +177,13 @@ public class Paciente extends Persona {
     return dto;
     }
 
-    public Map<String,Object> pacienteDTOforData(){
-        Map<String,Object> dto = new LinkedHashMap<>();
-        dto.put("id",this.getId());
-        dto.put("sexo",this.getSexo());
-        if(this.getAnamnesis() != null)
-            dto.put("anamnesis",this.getAnamnesis().AnamnesisDTO());
-        else
-            dto.put("anamnesis",null);
-        if(this.getHistoriaClinica().size() > 0){
-            dto.put("historiasClinicas", this.getHistoriaClinica().stream().map(HistoriaClinica::makeHistoriaClinicaDTO));
-        }else{
-            dto.put("historiasClinicas",null);
-        }
-
-        return dto;
-    }
-
     public Map<String,Object> pacienteDTOforAdministrativos(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.getId());
         dto.put("nombre",this.getNombre());
         dto.put("apellido",this.getApellido());
         dto.put("documento",this.getDocumento());
+        dto.put("fechaNacimiento",this.getFecha_nacimiento());
         dto.put("email",this.getEmail());
         dto.put("sexo",this.getSexo());
         dto.put("direccion",this.getDireccion());
